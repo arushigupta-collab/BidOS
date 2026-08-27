@@ -1,0 +1,36 @@
+node_modules/
+dist/
+dist-offline/
+*.tsbuildinfo
+.DS_Store
+
+# Local ingestion runs. Each is a few hundred KB of stage output and is
+# reproducible from the source document.
+.ingest/
+
+# Secrets. Two of the deployments this came from are public repositories;
+# a committed key is a public key.
+.env
+.env.*
+!.env.example
+
+# Documentation and source material. This repository holds what is needed to run
+# the three apps and nothing else.
+*.md
+*.pdf
+
+# TWO EXCEPTIONS, both of which are code dependencies rather than documents.
+#
+# CLAUDE.md is read at TEST TIME by src/routes/platform.test.tsx, which asserts
+# the landing's short-form card text differs from the verbatim descriptions held
+# there. Without it `npm test` fails on a fresh clone.
+!apps/bid-hawk/CLAUDE.md
+#
+# The bundled tender is an application asset: rfpDocument.ts serves it for every
+# seeded tender's "View RFP", and the offline build exists precisely so that
+# document opens on a machine with no network.
+!apps/bid-hawk/public/rfp/aaple-sarkar-2.0-rfp.pdf
+
+# Generated partner fixtures. Reproduced by fixtures/make-partner-responses.mjs,
+# which is committed; the twenty PDFs it writes are not.
+fixtures/partner-responses/

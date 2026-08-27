@@ -1,0 +1,149 @@
+@import "tailwindcss";
+@import "./fonts.css";
+
+/**
+ * The BidOS palette, shared with Bid Hawk.
+ *
+ * Values are lifted from emb-bidos/src/styles/tokens.css, which is where they
+ * are decided. Kept as the same semantic names this app already used -- navy,
+ * ink, cream, stone -- so the markup did not have to be rewritten to adopt them:
+ * every screen shifts palette from this file alone.
+ *
+ * `stone` is deliberately redefined rather than left as Tailwind's default. It
+ * carries almost every border and every piece of secondary text in this app, and
+ * Tailwind's stone is a cool grey against Bid Hawk's warm neutrals. Left alone it
+ * was the single largest reason the modules did not look like one product.
+ */
+@theme {
+  --font-sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI Variable Text",
+    "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", SFMono-Regular, Menlo,
+    Consolas, "Liberation Mono", monospace;
+
+  /* The desk the product sits on, and the paper on it. */
+  --color-canvas: #f3f0ea;
+  --color-canvas-sunken: #ece8e0;
+  --color-surface: #ffffff;
+
+  /* Primary. Deep navy, on filled buttons and active navigation only. */
+  --color-navy: #183460;
+  --color-navy-dark: #0e203d;
+  --color-navy-soft: #e9eef6;
+
+  /* Text. */
+  --color-ink: #1e1b16;
+
+  /*
+   * The wash behind anything a model wrote. One restrained warm accent,
+   * reserved for exactly that and for time-sensitive metadata.
+   */
+  --color-cream: #fcf2e3;
+  --color-cream-soft: #fdf7ee;
+  --color-cream-line: #ecd1a3;
+
+  /* Warm neutrals, replacing Tailwind's cool stone across the whole app. */
+  --color-stone-50: #f8f6f2;
+  --color-stone-100: #f1ede7;
+  --color-stone-200: #e6e1d8;
+  --color-stone-300: #ccc5b8;
+  --color-stone-400: #9a9287;
+  --color-stone-500: #6e6759;
+  --color-stone-600: #524c43;
+  --color-stone-700: #3f3a33;
+  --color-stone-800: #2c2823;
+  --color-stone-900: #1e1b16;
+
+  /* Status. Amber for care, red for a defect, green for something met. */
+  --color-emerald-50: #e8f4eb;
+  --color-emerald-200: #b4dbc0;
+  --color-emerald-600: #157439;
+  --color-emerald-800: #10552a;
+  --color-amber-50: #fbf3e1;
+  --color-amber-200: #e9d69e;
+  --color-amber-700: #926100;
+  --color-amber-900: #6b4700;
+  --color-red-50: #fcebe8;
+  --color-red-200: #f0beb7;
+  --color-red-700: #ae2116;
+  --color-red-800: #8f1a11;
+
+  /* Radius, on the scale Bid Hawk froze: field, control, card, overlay. */
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+  --radius-2xl: 16px;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-canvas);
+  color: var(--color-ink);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Numerals, tender references and countdowns line up in a column. */
+.numeric,
+.font-mono {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Thin, unobtrusive scrollbars inside the app panels. */
+.scroll-slim {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-stone-300) transparent;
+}
+.scroll-slim::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.scroll-slim::-webkit-scrollbar-thumb {
+  background-color: var(--color-stone-300);
+  border-radius: 9999px;
+}
+.scroll-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@keyframes drawer-in {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+.animate-drawer {
+  animation: drawer-in 0.26s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+.animate-fade {
+  animation: fade-in 0.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+@keyframes para-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-para {
+  animation: para-in 0.24s cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* Motion communicates state change, never decoration. */
+@media (prefers-reduced-motion: reduce) {
+  .animate-drawer,
+  .animate-fade,
+  .animate-para {
+    animation-duration: 0.01ms;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}

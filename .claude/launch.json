@@ -1,0 +1,23 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "bid-hawk",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/bid-hawk", "run", "dev"],
+      "port": 5173
+    },
+    {
+      "name": "bid-orchestrator",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/bid-orchestrator", "run", "dev"],
+      "port": 5174
+    },
+    {
+      "name": "bid-author",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "apps/bid-author", "run", "dev"],
+      "port": 5175
+    }
+  ]
+}

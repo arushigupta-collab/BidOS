@@ -1,0 +1,763 @@
+{
+  "documentId": "5c04513cc4e2",
+  "promotedAt": "2026-08-25T17:50:56.086Z",
+  "extract": {
+    "title": {
+      "value": "Request for Proposal for Selection of System Integrator for Implementation of Maharashtra RTS Aaple Sarkar 2.0 for Government of Maharashtra",
+      "page_no": 1,
+      "quote": "Request for Proposal for Selection of System Integrator for Implementation of Maharashtra RTS Aaple Sarkar 2.0 for Government of Maharashtra",
+      "confidence": 0.95
+    },
+    "tender_ref": {
+      "value": "MAHAIT/RTS2.0/001/2025/080",
+      "page_no": 1,
+      "quote": "Tender Reference Number MAHAIT/RTS2.0/001/2025/080",
+      "confidence": 0.99
+    },
+    "issuing_authority": {
+      "value": "Maharashtra Information Technology Corporation Limited (A Government of Maharashtra Enterprise)",
+      "page_no": 15,
+      "quote": "1. RFP Issuing Authority Maharashtra Information Technology Corporation Limited (A Government of Maharashtra Enterprise)",
+      "confidence": 0.98
+    },
+    "selection_method": {
+      "value": "The technical and financial scores secured by each Bidder will be added using weightage of 70% and 30% respectively to compute a Composite Bid Score. Bn = 0.70 * Tn + 0.30* Fn",
+      "page_no": 46,
+      "quote": "The technical and financial scores secured by each Bidder will be added using weightage of 70% and 30% respectively to compute a Composite Bid Score.\nBn = 0.70 * Tn + 0.30* Fn",
+      "confidence": 0.95
+    },
+    "tender_fee": {
+      "value": "INR 25,000/- (Indian Rupees Twenty-Five Thousand only) to be paid at e-Tendering Portal: https://www.mahatenders.gov.in",
+      "page_no": 15,
+      "quote": "6. Tender Fee (Non- Refundable) INR 25,000/- (Indian Rupees Twenty-Five Thousand only) to be paid at e-Tendering Portal: https://www.mahatenders.gov.in",
+      "confidence": 0.99
+    },
+    "emd": {
+      "value": "INR 1,00,00,000 /- (Indian Rupees One Crore only) in form of Bank Guarantee as per format provided in Annexure of this volume of the RFP.",
+      "page_no": 15,
+      "quote": "7. Earnest Money Deposit (EMD) INR 1,00,00,000 /- (Indian Rupees One Crore only) in form of Bank Guarantee as per format provided in Annexure of this volume of the RFP.",
+      "confidence": 0.98
+    },
+    "bid_due": {
+      "value": "Online submission of Proposal: 28/08/2025 and 17.00 Hrs https://www.mahatenders.gov.in",
+      "page_no": 15,
+      "quote": "11. Last Date and Time for submission of Bids in response to this RFP (Submission Deadline) Online submission of Proposal: 28/08/2025 and 17.00 Hrs https://www.mahatenders.gov.in",
+      "confidence": 0.99
+    },
+    "bid_validity": {
+      "value": "Proposals must remain valid up to 180 (One Hundred and Eighty) days from the Last Date of submission of the Bid.",
+      "page_no": 16,
+      "quote": "17. Bid validity Proposals must remain valid up to 180 (One Hundred and Eighty) days from the Last Date of submission of the Bid.",
+      "confidence": 0.99
+    },
+    "contract_term": {
+      "value": "The Term of the Contract period under this project is nine (9) months for Implementation and thirty-six (36) months for support i.e. the project is for overall period of forty five (45) months.",
+      "page_no": 167,
+      "quote": "The Term of the Contract period under this project is nine (9) months for Implementation and thirty-six (36) months for support i.e. the project is for overall period of forty five (45) months.",
+      "confidence": 0.99
+    },
+    "pbg": {
+      "value": "The Performance Bank Guarantee shall be for an amount equivalent to ten (10) % of Total Contract Value. The PBG shall be from a Nationalized Bank or a Scheduled Commercial Bank in the format prescribed in the RFP, payable on demand, for the due performance and fulfilment of the Contract by the Bidder. and shall have an extended validity of a hundred and eighty (180) days after end of the Operation and Maintenance (O&M) phase.",
+      "page_no": 48,
+      "quote": "The Performance Bank Guarantee shall be for an amount equivalent to ten (10) % of Total Contract Value. The PBG shall be from a Nationalized Bank or a Scheduled Commercial Bank in the format prescribed in the RFP, payable on demand, for the due performance and fulfilment of the Contract by the Bidder. and shall have an extended validity of a hundred and eighty (180) days after end of the Operation and Maintenance (O&M) phase.",
+      "confidence": 0.96
+    },
+    "est_value": {
+      "value": null,
+      "page_no": null,
+      "quote": null,
+      "confidence": 0.4
+    },
+    "est_value_is_inferred": false,
+    "envelopes": {
+      "value": "Bidders have to follow the submission process for a four-envelop (Tender Fee and EMD, Pre-Qualification Bid, Technical Bid and Commercial Bid) system on the e-Tendering Portal in order to submit their response to this RFP.",
+      "page_no": 10,
+      "quote": "Bidders have to follow the submission process for a four-envelop (Tender Fee and EMD, Pre-Qualification Bid, Technical Bid and Commercial Bid) system on the e-Tendering Portal in order to submit their response to this RFP.",
+      "confidence": 0.98
+    },
+    "prebid_queries_due": {
+      "value": "13/08/2025 and 12:00 tender@mahait.org Queries for Clarifications sent through any other medium shall not be considered.",
+      "page_no": 15,
+      "quote": "8. Last Date and Time for submission of Pre-bid Queries for Clarifications 13/08/2025 and 12:00 tender@mahait.org Queries for Clarifications sent through any other medium shall not be considered.",
+      "confidence": 0.98
+    },
+    "prebid_conference": {
+      "value": "18/08/2025 and 12:00 Venue: Board Room, Maharashtra Information Technology Corporation Limited, 3rd Floor, Apeejay House, Churchgate, Mumbai, Maharashtra – 400 020",
+      "page_no": 15,
+      "quote": "9. Date, Time and Venue of Pre-bid Conference 18/08/2025 and 12:00 Venue: Board Room, Maharashtra Information Technology Corporation Limited, 3rd Floor, Apeejay House, Churchgate, Mumbai, Maharashtra – 400 020",
+      "confidence": 0.95
+    },
+    "consortium_allowed": false,
+    "industry": "e-Governance and Citizen Services",
+    "region": "Maharashtra"
+  },
+  "eligibility": {
+    "rows": [
+      {
+        "criterion": "Sole Bidder must be registered under Indian Companies Act, 1956 / 2013 or partnership firms registered or under Limited Liability Partnerships (registered under LLP Act, 2008).",
+        "status": "pass",
+        "note": "Meridian Infratech Limited is incorporated on 14 March 2016 under the Companies Act 2013 (CIN U72900MH2016PLC287341).",
+        "page_no": 36
+      },
+      {
+        "criterion": "Sole Bidder must be in the business of IT/ITeS and should have successfully undertaken software development or IT project implementation anywhere in India at least in the 7 (seven) years prior to date of bid submission.",
+        "status": "pass",
+        "note": "The profile lists multiple India IT/ITeS implementations from 2021–2024 (e.g., state portal, land records, PSU data-centre, municipal platform).",
+        "page_no": 36
+      },
+      {
+        "criterion": "Average annual turnover of Sole Bidder during the immediate three preceding financial years ending on 31st March 2025 which have been audited should be at least INR 250 Cr; only standalone turnover of the bidding entity will be considered (no parent/subsidiary/associate turnover).",
+        "status": "pass",
+        "note": "Standalone average annual turnover is INR 268.4 Cr for FY 2022-23 to FY 2024-25; audited statements are available.",
+        "page_no": 36
+      },
+      {
+        "criterion": "The Net Worth of Sole Bidder should be Positive for each of the last three financial years ending on 31st March 2025.",
+        "status": "pass",
+        "note": "Net worth is stated as positive in each of the last three financial years.",
+        "page_no": 36
+      },
+      {
+        "criterion": "Sole Bidder must have been awarded IT Turnkey-Projects for Central Govt. / State Govt. / Urban Local Bodies / Government Corporations/ Government companies/ PSUs sector in India during the 7 years prior to the date of submission of bids: One (01) project, amount > INR 50 Cr.; OR Two (02) projects, amount for each is > INR 30 Cr.; OR Three (03) projects, amount for each is > INR 20 Cr.; (cumulative value for additions/extensions/CRs for the same project will be considered).",
+        "status": "pass",
+        "note": "They have three eligible government/PSU projects each > INR 20 Cr (34.6 Cr; 28.2 Cr; 21.4 Cr) within the last 7 years.",
+        "page_no": 36
+      },
+      {
+        "criterion": "Sole Bidder should have experience of Design, Development and implementing minimum two (2) projects in delivery of citizen services or schemes in the 7 (seven) years prior to the date of submission of bid.",
+        "status": "pass",
+        "note": "At least three cited are citizen-facing (statewide portal; land-records digitisation; municipal tax and permits).",
+        "page_no": 37
+      },
+      {
+        "criterion": "Sole Bidder must not be under a declaration of ineligibility / banned / blacklisted by any State or Central Government / any other Government institutions in India as on last date of submission of the Bid or convicted of economic offence in India as on last date of bid submission.",
+        "status": "pass",
+        "note": "Profile states not blacklisted/debarred and no conviction for an economic offence.",
+        "page_no": 37
+      },
+      {
+        "criterion": "Sole Bidder must have the following certifications: CMMI Level 5 (in development); ISO 9001; ISO 20000; ISO 27001; if any certificate is under renewal, last valid certificate plus self-declaration must be provided and the renewed certificate made available at least by opening of commercial bids, else disqualification; CMMI certificate should be verifiable on https://cmmiinstitute.com/pars.",
+        "status": "fail",
+        "note": "ISO 9001/20000/27001 are valid, but CMMI‑DEV Level 5 is lapsed and under renewal and the company is not listed on the CMMI PARS; to pass, a valid CMMI Level 5 (Development) certificate verifiable on PARS must be held by the required time.",
+        "page_no": 37
+      },
+      {
+        "criterion": "Sole Bidder must be registered with the Goods and Service Tax (GST) Authorities.",
+        "status": "pass",
+        "note": "GST registration is stated as 27AABCM4521Q1ZP.",
+        "page_no": 37
+      },
+      {
+        "criterion": "Board resolution/Power of attorney in favor of authorized signatory of Sole Bidder (in the name of the person executing the bid, authorizing the signatory to commit the Bidder).",
+        "status": "warn",
+        "note": "They issue Board Resolution/Power of Attorney per tender and not as standing documents, so it must be executed and submitted for this bid.",
+        "page_no": 38
+      },
+      {
+        "criterion": "Sole Bidder must have at least 100 resources delivering IT / ITeS-related services on its payroll since 1st April 2022 to bid submission date, and must have at the time of bidding an office having at least 100 seats in India.",
+        "status": "pass",
+        "note": "1,240 IT/ITeS resources on payroll (continuously above 1,000 since April 2021) and seat capacity of 340 (Mumbai) + 210 (Pune).",
+        "page_no": 38
+      },
+      {
+        "criterion": "Sole Bidder shall have an office of 20 seats within the limits of Mumbai Metropolitan Region (MMR); if not existing, an undertaking must be submitted to set up the office within 15 days of award.",
+        "status": "pass",
+        "note": "Registered office is in Andheri East, Mumbai (within MMR) with 340 seats; labour law compliance is stated.",
+        "page_no": 38
+      }
+    ]
+  },
+  "risks": {
+    "flags": [
+      {
+        "title": "Pre-bid conference date conflict",
+        "severity": "high",
+        "detail": "Two different dates are given for the pre-bid meeting/conference, creating uncertainty about when bidders can attend and when minutes will be issued.",
+        "evidence": [
+          {
+            "quote": "Pre-Bid meeting will be held on 13/08/2025 at 12:00 PM at the Board Room, Maharashtra Information Technology Corporation Limited, 3rd Floor, Apeejay House, Churchgate, Mumbai, Maharashtra – 400 020, for any suggestions or doubts regarding the RFP Document.",
+            "page_no": 10
+          },
+          {
+            "quote": "9. Date, Time and Venue of Pre-bid Conference 18/08/2025 and 12:00 Venue: Board Room, Maharashtra Information Technology Corporation Limited, 3rd Floor, Apeejay House, Churchgate, Mumbai, Maharashtra – 400 020",
+            "page_no": 15
+          }
+        ],
+        "recommendation": "Raise a pre-bid query requesting a corrigendum clarifying the exact pre-bid conference date and time, and whether the 13/08/2025 event is only a query deadline or also a meeting.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 15
+      },
+      {
+        "title": "QCBS weighting vs normalization formula",
+        "severity": "high",
+        "detail": "The RFP states a 70% technical and 30% commercial QCBS weighting but then provides a technical normalization formula that scales to 15 points, which is inconsistent with a 70% weight for technical scores.",
+        "evidence": [
+          {
+            "quote": "This is a Quality and Cost Based Selection (QCBS). The technical evaluation marks would be given 70% weightage and commercial evaluation marks would be given 30% weightage to arrive at a composite score.",
+            "page_no": 45
+          },
+          {
+            "quote": "Formula that shall be used for normalization is: Normalized Score = (Score of Bidder / 100) * 15",
+            "page_no": 45
+          }
+        ],
+        "recommendation": "Seek clarification on the correct technical normalization and composite score formula (e.g., confirm whether technical scores are to be scaled to 70, not 15) and request a corrected formula in a corrigendum.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 45
+      },
+      {
+        "title": "Unachievable API SLA and per‑call penalty",
+        "severity": "high",
+        "detail": "The API response time target of 0.30 milliseconds per call is not physically achievable for a web service, and the penalty is defined per API call, creating unlimited exposure.",
+        "evidence": [
+          {
+            "quote": "3 API response time Time taken for system APIs to respond to external/internal service calls ≤ 0.30 ms per API call 1% of milestone payment per API call exceeding the response time in a given month",
+            "page_no": 144
+          }
+        ],
+        "recommendation": "Request correction of the API target to a realistic figure (e.g., in milliseconds/seconds appropriate to network latency) and clarification that any penalty, if applicable, is aggregated and subject to an overall monthly cap.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 144
+      },
+      {
+        "title": "Conflicting uptime targets and penalty bases",
+        "severity": "high",
+        "detail": "Two different uptime baselines and penalty regimes are stated: 99.5% monthly with per‑0.1% penalties, and 98.5% quarterly with per‑0.5% penalties. This creates ambiguity on what is measured and enforced.",
+        "evidence": [
+          {
+            "quote": "1 Aaple Sarkar 2.0 Portal Uptime Availability of the service delivery portal for end-users ≥ 99.5% uptime per calendar month 1% of milestone payment per 0.1% drop below threshold per month",
+            "page_no": 144
+          },
+          {
+            "quote": "3. SLA for Uptime For every 0.5 % drop in uptime in each quarter over the required uptime of 98.5% a penalty up to 0.25% of the Quarterly Invoice Value would be liable to be deducted.",
+            "page_no": 161
+          }
+        ],
+        "recommendation": "Ask the Purchaser to confirm a single authoritative uptime metric (target, measurement period, and penalty formula) in a corrigendum and to withdraw the conflicting clause.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 161
+      },
+      {
+        "title": "Inconsistent GST treatment (inclusive vs extra)",
+        "severity": "high",
+        "detail": "The Fact Sheet says prices inclusive of all taxes including GST will be used for evaluation, while the Taxes clause says only GST will be paid by the Purchaser as part of payments, which implies GST is to be charged over the base price. This inconsistency affects price formation and evaluation parity.",
+        "evidence": [
+          {
+            "quote": "Prices inclusive of taxes (including GST) will be considered for arriving at the Composite Score.",
+            "page_no": 15
+          },
+          {
+            "quote": "19. Taxes Only Goods and Services Tax (GST) shall be paid by the Purchaser to the System Integrator as part of payments being made under the Contract that shall ensue in effect of this RFP Document.",
+            "page_no": 16
+          }
+        ],
+        "recommendation": "Seek explicit instruction on whether bidders should quote prices inclusive or exclusive of GST and how evaluation will normalize bids; request alignment between evaluation and payment terms in a corrigendum.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 16
+      },
+      {
+        "title": "Undefined monthly SLA penalty cap referenced",
+        "severity": "medium",
+        "detail": "The document refers to an overall SLA penalties cap per month but does not define the cap value or where it applies, leaving bidders exposed to uncertain aggregate penalties.",
+        "evidence": [
+          {
+            "quote": "These penalties will not be part of overall SLA penalties cap per month.",
+            "page_no": 152
+          }
+        ],
+        "recommendation": "Request the definition and value of the overall monthly SLA penalty cap, its scope, and how it interacts with other penalties.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 152
+      },
+      {
+        "title": "Penalty cap inconsistency (100% of quarter vs 5% of O&M TCV)",
+        "severity": "high",
+        "detail": "One SLA imposes 100% of the Quarterly Payment as penalty for an 8‑hour outage, while another clause caps penalties to 5% of Total Contract Value for the O&M phase. Without clear precedence, these are irreconcilable.",
+        "evidence": [
+          {
+            "quote": "In case the services is not available for a continuous period of 8 Business Hours on any day, penaltyshall be 100% of the Quarterly Payment of the Project.",
+            "page_no": 145
+          },
+          {
+            "quote": "The maximum penalty will be up to five (5) % of Total Contract Value pertaining to the O&M phase.",
+            "page_no": 164
+          }
+        ],
+        "recommendation": "Ask whether the 100% quarterly penalty is subject to the overall cap and to define a single penalty‑cap framework (monthly/quarterly and overall) applicable to all SLAs.",
+        "deadline": "13/08/2025 and 12:00",
+        "page_no": 145
+      }
+    ]
+  },
+  "summarise": {
+    "bullets": [
+      "System Integrator to implement Maharashtra RTS Aaple Sarkar 2.0 for Government of Maharashtra, with a 9‑month implementation and 36 months of support (total 45 months).",
+      "Winner selected via QCBS with 70% technical and 30% financial weight (Bn = 0.70*Tn + 0.30*Fn); the document’s normalization formula conflicts with this and needs clarification.",
+      "Financial gates: Tender Fee INR 25,000; EMD INR 1,00,00,000 (Bank Guarantee); Performance Bank Guarantee ten (10) % of Total Contract Value; bid validity 180 days.",
+      "Submission is a four‑envelope process on https://www.mahatenders.gov.in; consortium not allowed; certifications required include CMMI Level 5 (Development) plus ISO 9001/20000/27001.",
+      "Material risk points include an unachievable API SLA (≤ 0.30 ms with per‑call penalties), conflicting uptime targets and penalty regimes, undefined or inconsistent penalty caps, and inconsistent GST treatment between evaluation and payments.",
+      "Key dates: pre‑bid queries close 13 August 2027 at 12:00, pre‑bid conference 18 August 2027 at 12:00, and bid submission closes 28 August 2027 at 17:00."
+    ],
+    "condensed": [
+      "System Integrator for Maharashtra RTS Aaple Sarkar 2.0 (9‑month build + 36‑month support), selected via QCBS 70:30; fees and securities include INR 25,000 tender fee, INR 1,00,00,000 EMD, and PBG 10% of TCV.",
+      "Red flags: CMMI‑DEV L5 mandatory, four‑envelope submission, conflicting scoring and SLA/penalty clauses (0.30 ms API target, uptime and cap inconsistencies, GST evaluation vs payment); pre‑bid queries 13 Aug 2027 12:00; conference 18 Aug 2027 12:00; bid due 28 Aug 2027 17:00."
+    ]
+  },
+  "workpackages": {
+    "packages": [
+      {
+        "role_id": "bid-manager",
+        "brief": "Ensure the bid is submitted correctly on the e‑Tender portal in the prescribed four‑envelope process with all originals physically submitted and all required cover letters, certificates, and checklists completed.",
+        "source_sections": [
+          "Invitation for Proposal",
+          "Fact Sheet",
+          "4.5",
+          "4.7",
+          "4.8",
+          "4.10",
+          "4.11",
+          "Annexure 18",
+          "Annexure 19",
+          "Annexure 21",
+          "Annexure 22",
+          "Annexure 25",
+          "Annexure 26"
+        ],
+        "action_items": [
+          {
+            "text": "Pay the Tender Fee of INR 25,000/- at https://www.mahatenders.gov.in prior to bid submission and keep the receipt for Envelope One.",
+            "ref": "Fact Sheet #6 (Tender Fee)",
+            "page_no": 15
+          },
+          {
+            "text": "Obtain and upload the EMD in the form of a Bank Guarantee for INR 1,00,00,000 /- as per Annexure 4, ensuring validity is at least 30 days beyond the Bid Validity; place scanned copy in Envelope One.",
+            "ref": "Fact Sheet #7; RFP 4.8; Annexure 4",
+            "page_no": 15
+          },
+          {
+            "text": "Submit pre-bid queries only by email to tender@mahait.org in BOTH PDF and editable Excel using the prescribed template, ensuring no differences between the two formats, by 13 August 2027 at 12:00.",
+            "ref": "RFP 4.5.1(5)-(6); Annexure 18",
+            "page_no": 24
+          },
+          {
+            "text": "Prepare and upload the four envelopes online exactly as per the structure (Tender Fee & EMD; Pre-Qualification; Technical; Commercial), and do not include any prices/discounts in the Technical Bid.",
+            "ref": "RFP 4.10 (overview of documents in each envelope) and instruction on prices in Technical Bid",
+            "page_no": 26
+          },
+          {
+            "text": "Physically submit ONLY the originals of (i) EMD Bank Guarantee, (ii) Power of Attorney authorizing the signatory, and (iii) Non‑Disclosure Agreement (NDA) to MahaIT, ensuring receipt before bid submission closes on 28 August 2027 at 17:00.",
+            "ref": "Physical submission list",
+            "page_no": 27
+          },
+          {
+            "text": "Complete and upload the required bid cover letters and compliance/checklist forms: Pre‑Qualification Bid Covering Letter (Annexure 19), Technical Bid Covering Letter (Annexure 21), Compliance Certificate (Annexure 22), Pre‑Qualification Checklist (Annexure 25) and Technical Bid Checklist (Annexure 26).",
+            "ref": "Annexures index; PQ/Technical Checklists",
+            "page_no": 8
+          },
+          {
+            "text": "Ensure only one Proposal and one Solution is submitted by the company; multiple or alternative solutions will lead to disqualification.",
+            "ref": "RFP 4.11 Only One Proposal and One Solution",
+            "page_no": 27
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 1",
+            "title": "Tender Offer Form",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 2",
+            "title": "Details of Bidder",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 6",
+            "title": "Deviations",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 7",
+            "title": "Form of Certificate confirming receipt of all Bid Agenda",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 18",
+            "title": "Template for Pre-Bid Queries",
+            "kind": "fields",
+            "page_no": 244
+          },
+          {
+            "annexure": "Annexure 19",
+            "title": "Pre-Qualification Bid Covering Letter",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 21",
+            "title": "Technical Bid Covering Letter",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 22",
+            "title": "Compliance Certificate",
+            "kind": "checklist",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 25",
+            "title": "Pre-Qualification Checklist",
+            "kind": "checklist",
+            "page_no": 253
+          },
+          {
+            "annexure": "Annexure 26",
+            "title": "Technical Bid Checklist",
+            "kind": "checklist",
+            "page_no": 256
+          }
+        ]
+      },
+      {
+        "role_id": "solution-architect",
+        "brief": "Ensure the technical proposal fully meets functional specs, provides verifiable solution credentials, and includes complete project and manpower plans with mandated certifications and OEM documents.",
+        "source_sections": [
+          "4.14",
+          "5.5",
+          "Annexure 16",
+          "Annexure 17",
+          "Annexure 23",
+          "Annexure 24",
+          "Annexure 27",
+          "Annexure 28"
+        ],
+        "action_items": [
+          {
+            "text": "Submit Proposed Project Plan (Annexure 23) and Resource Deployment/Manpower Plan (Annexure 24) with roles, on/offsite distribution and timelines as required in the technical bid.",
+            "ref": "Technical Bid Checklist items for Annexure 23 and Annexure 24",
+            "page_no": 257
+          },
+          {
+            "text": "Respond to all Functional Requirement Specifications in Section 12 marking each as ‘Available’ or ‘Not available’; note that scoring is 1/0 per item and normalized to 10, and items affirmed may be asked to be demonstrated during technical presentation.",
+            "ref": "TQ 2.2 Functional Requirement Specifications response rules",
+            "page_no": 40
+          },
+          {
+            "text": "Provide evidence that the proposed solution has been implemented or is under implementation in at least one citizen service/scheme delivery project in India (PO/Agreement/WO + Scope of Work).",
+            "ref": "TQ 2.1 Proposed solution prior implementation/under implementation",
+            "page_no": 40
+          },
+          {
+            "text": "Obtain and upload Manufacturer’s Authorization Forms (Annexure 16) and OEM Undertakings for Product Usage (Annexure 17) for each OEM component proposed; include Cloud Service Provider certificate where applicable.",
+            "ref": "TQ 3.3 supporting certificates; Annexure 16; Annexure 17",
+            "page_no": 256
+          },
+          {
+            "text": "Ensure that at least 50% of the proposed resources in the resource plan are on the bidder’s payroll as on the date of bid submission and that Key Personnel availability aligns with 4.14.",
+            "ref": "RFP 4.14.1 staffing/payroll requirement",
+            "page_no": 28
+          },
+          {
+            "text": "Prepare and upload the Technical Presentation aligning to understanding, proposed technology solution, approach & methodology, handholding/training, and project/resource plans as per Technical Bid Checklist.",
+            "ref": "Technical Bid Checklist – Copy of Technical Presentation and supporting sections",
+            "page_no": 256
+          },
+          {
+            "text": "If claiming AI/ML experience for scoring, include Purchase Orders/Agreements and a client letter confirming use of AI/ML during the lifecycle within the last 3 years from bid due date.",
+            "ref": "TQ 2.3 AI/ML utilization evidence",
+            "page_no": 40
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 23",
+            "title": "Project Plan",
+            "kind": "fields",
+            "page_no": 251
+          },
+          {
+            "annexure": "Annexure 24",
+            "title": "Manpower Plan",
+            "kind": "fields",
+            "page_no": 251
+          },
+          {
+            "annexure": "Annexure 27",
+            "title": "Change Control Note",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 28",
+            "title": "End-of-sale of OEM tool",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 16",
+            "title": "Manufacturer’s Authorization Form",
+            "kind": "fields",
+            "page_no": 242
+          },
+          {
+            "annexure": "Annexure 17",
+            "title": "Manufacturer/OEM Undertaking for Product Usage",
+            "kind": "fields",
+            "page_no": 243
+          }
+        ]
+      },
+      {
+        "role_id": "legal-1",
+        "brief": "Ensure all general legal compliances are met, including corporate authorities, blacklisting/debarment declaration, and readiness to execute the draft contract.",
+        "source_sections": [
+          "4.8",
+          "5.4",
+          "Annexure 5",
+          "Annexure 12",
+          "Annexure 15"
+        ],
+        "action_items": [
+          {
+            "text": "Prepare and physically submit the original Power of Attorney in the name of the person executing the Bid, authorizing the signatory, as part of the mandatory physical submissions.",
+            "ref": "Physical submission list; Power of Attorney (Annexure 15) reference in PQ checklist",
+            "page_no": 27
+          },
+          {
+            "text": "Provide the Affidavit/Declaration that the bidder is not under ineligibility/ban/blacklist and not convicted of economic offence as on the last date of bid submission, in the prescribed format.",
+            "ref": "PQ 1.7; Annexure 5 – Statement of Blacklisting & Debarment",
+            "page_no": 37
+          },
+          {
+            "text": "Arrange incorporation/registration documents as per PQ 1.1 (Companies Act/Partnership/LLP) to support eligibility.",
+            "ref": "PQ 1.1 – Registration requirements and documents",
+            "page_no": 36
+          },
+          {
+            "text": "Acknowledge that failure to sign the Contract in accordance with the RFP will lead to EMD forfeiture; review Draft Contract Form (Annexure 12) and prepare execution set post-award.",
+            "ref": "RFP 4.8 (EMD forfeiture on failure to sign); Annexure 12 Draft Contract Form",
+            "page_no": 25
+          },
+          {
+            "text": "Confirm the bid’s validity commitment of 180 days from the last date of bid submission is incorporated in bidder’s undertakings.",
+            "ref": "Fact Sheet #17 – Bid validity",
+            "page_no": 16
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 5",
+            "title": "Statement of Blacklisting & Debarment (Declaration from the Bidder)",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 12",
+            "title": "Draft Contract Form",
+            "kind": "fields",
+            "page_no": 236
+          },
+          {
+            "annexure": "Annexure 15",
+            "title": "Power of Attorney",
+            "kind": "fields",
+            "page_no": 255
+          }
+        ]
+      },
+      {
+        "role_id": "legal-2",
+        "brief": "Ensure all special undertakings and confidentiality/compliance documents are executed, including NDA, total responsibility, and OEM declarations, and oversee certification compliance conditions.",
+        "source_sections": [
+          "4.12",
+          "5.4",
+          "Annexure 14",
+          "Annexure 20",
+          "Annexure 29"
+        ],
+        "action_items": [
+          {
+            "text": "Execute and physically submit the original Non‑Disclosure Agreement (NDA) in the prescribed annexure as part of the mandatory physical submissions.",
+            "ref": "Physical submission list; Annexure 14 – Non-Disclosure Agreement",
+            "page_no": 27
+          },
+          {
+            "text": "Sign and submit the Total Responsibility Certificate undertaking defect‑free operations of the proposed solution as per the prescribed annexure.",
+            "ref": "RFP 4.12 Total Responsibility; Annexure 20 – Total Responsibility Certificate",
+            "page_no": 27
+          },
+          {
+            "text": "Obtain and submit the Declaration from OEM (where applicable) as per the prescribed annexure.",
+            "ref": "Annexure 29 – Declaration from OEM",
+            "page_no": 9
+          },
+          {
+            "text": "Ensure the bidder furnishes CMMI Level 5 (in development), ISO 9001, ISO 20000 and ISO 27001 certificates; if any are under renewal, provide last valid certificate and ensure renewed certificate is available by the time of opening of commercial bids, else the bid will be disqualified; verify the CMMI certificate at https://cmmiinstitute.com/pars.",
+            "ref": "PQ 1.8 including Notes (1)-(3)",
+            "page_no": 38
+          },
+          {
+            "text": "Ensure all pre‑bid communications follow the stipulated medium (email only) and format (both PDF and Excel using annexure template); queries via other media are not considered.",
+            "ref": "RFP 4.5.1(4)-(6)",
+            "page_no": 24
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 14",
+            "title": "Non-Disclosure Agreement",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 20",
+            "title": "Total Responsibility Certificate",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 29",
+            "title": "Declaration from OEM",
+            "kind": "fields",
+            "page_no": 9
+          }
+        ]
+      },
+      {
+        "role_id": "finance",
+        "brief": "Ensure all financial eligibility proofs and bank guarantees are prepared correctly and the commercial bid is compiled in the prescribed formats and currency/tax terms.",
+        "source_sections": [
+          "Fact Sheet",
+          "4.7",
+          "4.8",
+          "5.4",
+          "5.5",
+          "Annexure 3",
+          "Annexure 4",
+          "Annexure 8",
+          "Annexure 13"
+        ],
+        "action_items": [
+          {
+            "text": "Arrange payment of Tender Fee and retain the e‑Tendering portal receipt for Envelope One.",
+            "ref": "Fact Sheet #6 – Tender Fee",
+            "page_no": 15
+          },
+          {
+            "text": "Prepare the EMD Bank Guarantee for INR 1,00,00,000 /- in the exact Annexure 4 format, valid at least 30 days beyond Bid Validity, and provide the original for physical submission; upload the scanned copy in Envelope One.",
+            "ref": "Fact Sheet #7; RFP 4.8; Annexure 4 – BG format for EMD",
+            "page_no": 15
+          },
+          {
+            "text": "Compile the Commercial Bid strictly in the prescribed BOQ/summary formats (Annexure 3), quoting only in Indian Rupees (INR) and ensuring prices are inclusive of taxes (including GST) for composite score evaluation.",
+            "ref": "Annexure 3; Fact Sheet #2 (prices inclusive of taxes for QCBS); Fact Sheet #18 (Currency)",
+            "page_no": 15
+          },
+          {
+            "text": "Provide certified copies of audited financial statements for the last three financial years and a CA certificate evidencing average annual turnover of at least INR 250 Cr as of 31 March 2025.",
+            "ref": "PQ 1.3 – Turnover documentation",
+            "page_no": 36
+          },
+          {
+            "text": "Provide a certificate from the Statutory Auditor/CA confirming positive Net Worth for each of the last three financial years ending 31 March 2025.",
+            "ref": "PQ 1.4 – Net Worth requirement",
+            "page_no": 36
+          },
+          {
+            "text": "On award, prepare and submit the Performance Bank Guarantee in the prescribed format (Annexure 13) as per the contract requirements.",
+            "ref": "Annexure 13 – Format for Performance Bank Guarantee",
+            "page_no": 237
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 3",
+            "title": "Formats for Submission of the Commercial Bid (Commercial Bid Cover Letter, BOQ Formats, Total Cost Summary)",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 4",
+            "title": "Bank Guarantee format for Earnest Money Deposit (EMD)",
+            "kind": "fields",
+            "page_no": 224
+          },
+          {
+            "annexure": "Annexure 8",
+            "title": "Certificate for Annual Turnover and Net Worth",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 13",
+            "title": "Format for Performance Bank Guarantee",
+            "kind": "fields",
+            "page_no": 237
+          }
+        ]
+      },
+      {
+        "role_id": "delivery",
+        "brief": "Ensure evidence of relevant past performance and staffing capability is compiled and implementation/O&M readiness (including MMR office) is demonstrated as per the RFP.",
+        "source_sections": [
+          "4.14",
+          "5.4",
+          "5.5",
+          "Annexure 10",
+          "Annexure 11"
+        ],
+        "action_items": [
+          {
+            "text": "Compile and upload Summary of Work Experience/Project Execution Experience (Annexure 10) and Credential Summary (Annexure 11) with supporting Work Orders and Completion/Phase Completion Certificates as per PQ 1.5 and 1.6.",
+            "ref": "PQ 1.5 and 1.6; Annexure 10; Annexure 11",
+            "page_no": 36
+          },
+          {
+            "text": "Provide Work Orders and Completion (or Phase Completion) Certificates evidencing required project values/volumes (e.g., turnkey projects value thresholds; services/schemes onboarding and transactions) for PQ and TQ scoring.",
+            "ref": "PQ 1.5, 1.6; TQ 1.2–1.4",
+            "page_no": 37
+          },
+          {
+            "text": "Submit CVs of at least 50% of the proposed resources as per Technical Bid Checklist and ensure Key Personnel meet qualifications and continuity expectations under 4.14.",
+            "ref": "Technical Bid Checklist item 30; RFP 4.14",
+            "page_no": 258
+          },
+          {
+            "text": "Populate the Operation & Maintenance manpower distribution tables (post go‑live) in alignment with Annexure 24 and project needs.",
+            "ref": "Annexure 24 – O&M manpower distribution tables",
+            "page_no": 253
+          },
+          {
+            "text": "Provide HR Department certificate and PF certificate/statement evidencing at least 100 resources delivering IT/ITeS services on payroll since 1 April 2022 to bid submission date, and confirm an office with at least 100 seats in India at time of bidding.",
+            "ref": "PQ 1.11 – HR/PF and office capacity requirements",
+            "page_no": 38
+          },
+          {
+            "text": "Provide a letter confirming an existing office of 20 seats within Mumbai Metropolitan Region (MMR) or, if not existing, submit an undertaking to set up the office within 15 days of award, with an undertaking for compliance with all labour laws.",
+            "ref": "PQ 1.12 – MMR office/undertaking requirement",
+            "page_no": 38
+          }
+        ],
+        "forms": [
+          {
+            "annexure": "Annexure 10",
+            "title": "Summary of Work Experience / Project Execution Experience",
+            "kind": "fields",
+            "page_no": 8
+          },
+          {
+            "annexure": "Annexure 11",
+            "title": "Credential Summary",
+            "kind": "fields",
+            "page_no": 8
+          }
+        ]
+      }
+    ]
+  }
+}

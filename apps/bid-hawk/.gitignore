@@ -1,0 +1,17 @@
+node_modules/
+
+# Both build outputs. dist/ is the hosted web build, dist-offline/ the file://
+# demo build; neither is committed.
+dist/
+dist-offline/
+
+*.tsbuildinfo
+
+.DS_Store
+.vercel/
+
+# Secrets. Two of these repos are public; a committed key is a public key.
+.env
+.env.*
+!.env.example
+.ingest/

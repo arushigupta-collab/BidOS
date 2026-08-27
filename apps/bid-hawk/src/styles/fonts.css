@@ -1,0 +1,31 @@
+/* ============================================================================
+   Self-hosted typefaces
+   ----------------------------------------------------------------------------
+   Both faces ship inside the bundle and are inlined as data URIs by the build
+   (see build.assetsInlineLimit in vite.config.ts). A file:// page is an opaque
+   origin, so a font fetched as a separate file is liable to be refused as
+   cross-origin; a data URI cannot be. Reaching the platform fallback stack is
+   a defect, so the inlining is asserted by the font test rather than assumed.
+
+   The wght axis alone is used: one file covers 100 to 900 with no optical-size
+   axis and no italic, which the product does not set anywhere. Latin subset
+   only; there is no non-Latin copy in the product.
+   ========================================================================= */
+
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('@fontsource-variable/inter/files/inter-latin-wght-normal.woff2')
+    format('woff2');
+}
+
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: 100 900;
+  font-display: swap;
+  src: url('@fontsource-variable/jetbrains-mono/files/jetbrains-mono-latin-wght-normal.woff2')
+    format('woff2');
+}

@@ -1,0 +1,556 @@
+/* ============================================================================
+   BidOS design tokens
+   ----------------------------------------------------------------------------
+   The single place in this codebase where a literal colour, pixel, duration or
+   curve may appear. Everything downstream consumes these through Tailwind
+   (tailwind.config.ts maps each scale onto these properties) or through
+   var(--token) in src/styles/base.css.
+
+   Structure: a warm light neutral CANVAS is the desk the product sits on. The
+   WORKSPACE is a white card floating on it, inset from every canvas edge, with
+   brand marks and navigation left outside on the canvas itself.
+
+   Colour is stored as space-separated sRGB channels so Tailwind's
+   `rgb(var(--x) / <alpha-value>)` opacity modifiers work and so a dark theme
+   is a pure value swap (see [data-theme='dark'] at the end of this file).
+   ========================================================================= */
+
+:root {
+  color-scheme: light;
+
+  /* --- Typeface -----------------------------------------------------------
+     Both faces are self-hosted and inlined by the build (src/styles/fonts.css).
+     The stacks still name platform fallbacks so a font failure degrades to
+     readable text rather than to a serif, but reaching the fallback is a
+     defect, not a supported state. */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI Variable Text',
+    'Segoe UI', system-ui, 'Helvetica Neue', Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', ui-monospace, 'SF Mono', SFMono-Regular, Menlo,
+    'Cascadia Mono', 'Roboto Mono', Consolas, monospace;
+
+  /* =========================================================================
+     COLOUR — canvas and surfaces
+     Structure comes from layered luminance, not outlines. Recessed to
+     elevated: canvas → inset → sunken → surface → overlay.
+     ====================================================================== */
+  --color-canvas: 243 240 234;
+  --color-canvas-sunken: 236 232 224;
+  --color-background: 243 240 234;
+
+  --color-surface: 255 255 255;
+  --color-surface-raised: 255 255 255;
+  --color-surface-sunken: 248 246 242;
+  --color-surface-inset: 241 237 231;
+  --color-surface-hover: 247 245 241;
+  --color-surface-pressed: 239 235 228;
+  --color-surface-selected: 237 241 248;
+  --color-surface-overlay: 255 255 255;
+
+  /* The module card ramp is RETIRED. The cards take a flat `surface-sunken`, one
+     luminance step below the white workspace, so the no-gradients rule now holds
+     everywhere with no exception. See decision 240. */
+
+  /* COLOUR — foreground (warm neutral, matched to the canvas hue) */
+  /* Muted is set so that it clears 4.5:1 against every surface it is permitted
+     to sit on, including the inset step row. Subtle is below that bar and is
+     therefore restricted to placeholders and non-text marks. */
+  --color-foreground: 30 27 22;
+  --color-foreground-secondary: 82 76 67;
+  --color-foreground-muted: 110 103 89;
+  --color-foreground-subtle: 154 146 135;
+  --color-foreground-inverted: 255 255 255;
+  --color-foreground-on-accent: 255 255 255;
+
+  /* COLOUR — primary (deep navy)
+     Filled primary buttons and active navigation only. Never generic emphasis. */
+  --color-primary: 24 52 96;
+  --color-primary-hover: 19 42 79;
+  --color-primary-pressed: 14 32 61;
+  --color-primary-subtle: 233 238 246;
+  --color-primary-subtle-hover: 221 230 243;
+  --color-primary-border: 184 201 228;
+  --color-primary-foreground: 255 255 255;
+
+  /* COLOUR — secondary (neutral action surface) */
+  --color-secondary: 255 255 255;
+  --color-secondary-hover: 247 245 241;
+  --color-secondary-pressed: 239 235 228;
+  --color-secondary-border: 210 203 191;
+  --color-secondary-foreground: 38 34 28;
+
+  /* COLOUR — accent (agent activity and time-sensitive metadata ONLY)
+     Never used for generic emphasis. Reserved for Bid Hawk, agent-authored
+     content, confidence signals and deadline-adjacent metadata. */
+  --color-accent: 173 79 9;
+  --color-accent-hover: 148 67 8;
+  --color-accent-pressed: 122 55 6;
+  --color-accent-subtle: 252 242 227;
+  --color-accent-border: 236 209 163;
+  --color-accent-foreground: 255 255 255;
+
+  /* Background wash behind AI-generated text. Warm cream, deliberately not
+     the accent subtle: it must sit under long-form body copy. */
+  --accent-ai-wash: 253 249 241;
+  --accent-ai-wash-border: 238 226 204;
+
+  /* COLOUR — EMB brand
+     The one place a brand value lives. The wordmark itself takes `foreground` so
+     it inverts with the theme; only the leaf cluster is fixed, because it is the
+     company's colour and not ours to reinterpret. */
+  --color-emb-leaf: 61 195 106;
+
+  /* COLOUR — neutral */
+  --color-neutral: 112 105 95;
+  --color-neutral-subtle: 242 239 233;
+  --color-neutral-border: 223 217 206;
+  --color-neutral-foreground: 255 255 255;
+
+  /* COLOUR — status */
+  --color-success: 21 116 57;
+  --color-success-subtle: 232 244 235;
+  --color-success-border: 180 219 192;
+  --color-success-foreground: 255 255 255;
+
+  --color-warning: 146 97 0;
+  --color-warning-subtle: 251 243 225;
+  --color-warning-border: 233 214 158;
+  --color-warning-foreground: 255 255 255;
+
+  --color-destructive: 174 33 22;
+  --color-destructive-hover: 143 26 17;
+  --color-destructive-pressed: 119 21 14;
+  --color-destructive-subtle: 252 235 232;
+  --color-destructive-border: 240 190 183;
+  --color-destructive-foreground: 255 255 255;
+
+  --color-info: 22 88 202;
+  --color-info-subtle: 234 240 252;
+  --color-info-border: 185 206 244;
+  --color-info-foreground: 255 255 255;
+
+  /* COLOUR — deadline urgency
+     critical  under 72 hours
+     warning   under 7 days
+     normal    everything further out */
+  --color-urgency-critical: 174 33 27;
+  --color-urgency-critical-subtle: 252 235 232;
+  --color-urgency-critical-border: 240 190 183;
+  --color-urgency-warning: 146 97 0;
+  --color-urgency-warning-subtle: 251 243 225;
+  --color-urgency-warning-border: 233 214 158;
+  --color-urgency-normal: 82 76 67;
+  --color-urgency-normal-subtle: 242 239 233;
+  --color-urgency-normal-border: 223 217 206;
+
+  /* COLOUR — structure. Borders support hierarchy, they never create it. */
+  --color-border: 230 225 216;
+  --color-border-strong: 204 197 184;
+  --color-border-subtle: 239 235 227;
+  --color-divider: 234 229 220;
+  --color-overlay: 22 19 15;
+  --color-focus: 30 84 184;
+  --color-selection: 221 230 243;
+  /* A disabled control has to still read as a control. These are a real tonal
+     step below the lowest surface it can sit on — the inset step row — because
+     at the previous values the fill and the border both matched that row and a
+     disabled button rendered as plain grey text.
+
+     The foreground is 4.68:1 on that fill. WCAG exempts inactive controls from
+     any contrast floor, and it was at 3.54:1 on that exemption; but on the BidOS
+     landing this label is the whole action for two of the three modules, and a
+     label an operator has to squint at is not carrying the state, it is hiding
+     it. Still an 3.4x gap to enabled body text, so nothing reads as live. */
+  --color-disabled: 232 228 219;
+  --color-disabled-border: 204 197 184;
+  --color-disabled-foreground: 105 99 90;
+
+  /* COLOUR — categorical chart palette */
+  --color-chart-1: 24 52 96;
+  --color-chart-2: 14 110 137;
+  --color-chart-3: 173 79 9;
+  --color-chart-4: 102 42 190;
+  --color-chart-5: 176 26 92;
+  --color-chart-6: 12 130 158;
+  --color-chart-7: 78 116 20;
+  --color-chart-8: 112 105 95;
+
+  /* =========================================================================
+     SPACING — the only permitted scale
+     ====================================================================== */
+  --space-hair: 1px;
+  --space-2: 2px;
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-20: 20px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-64: 64px;
+  --space-80: 80px;
+  --space-96: 96px;
+
+  /* =========================================================================
+     RADIUS — fixed mapping, no other values exist
+     ====================================================================== */
+  --radius-field: 4px; /* inputs, chips, badges */
+  --radius-control: 8px; /* buttons, small cards */
+  --radius-card: 12px; /* cards, dropdowns, popovers */
+  --radius-overlay: 16px; /* dialogs, drawers, the workspace card */
+  --radius-full: 9999px; /* avatars, pills */
+
+  --border-width: 1px;
+  --border-width-strong: 2px;
+  --border-width-accent: 3px;
+
+  /* =========================================================================
+     TYPOGRAPHY — sizes for the named styles declared in tailwind.config.ts.
+     A named style owns size, weight, line height and tracking together; a
+     component may not reach past the name to any of them. The range is
+     deliberately wide: a narrow range is what flattens an interface.
+     ====================================================================== */
+  --type-display-xl: 4.5rem;
+  /* Display, the base name of the style CLAUDE.md's type system lists.
+     A FOURTH display size, added deliberately, now 48px. It is the floor: a test
+     asserts this token computes to at least 48 and exceeds SectionTitle, because the
+     wordmark collapsed once. Named rather than a one-off size, so it stays inside the
+     rule that no component may use a size outside a named style. */
+  --type-display: 3rem;
+  --type-display-l: 3.25rem;
+  --type-display-m: 2.5rem;
+  --type-display-s: 1.875rem;
+  --type-page-title: 1.5rem;
+  --type-section-title: 1.25rem;
+  --type-panel-title: 1rem;
+  --type-body-l: 1.0625rem;
+  --type-body: 0.875rem;
+  --type-secondary-body: 0.9375rem;
+  --type-micro-label: 0.6875rem;
+  --type-label: 0.75rem;
+  --type-caption: 0.75rem;
+  --type-metadata: 0.75rem;
+  --type-button: 0.875rem;
+  --type-button-sm: 0.75rem;
+  --type-table-cell: 0.875rem;
+  --type-kpi-value: 1.875rem;
+  --type-kpi-label: 0.6875rem;
+  --type-code: 0.8125rem;
+  --type-helper: 0.75rem;
+
+  /* =========================================================================
+     ELEVATION — signals interaction priority. Surface contrast does the
+     structural work; shadow only reinforces. Never coloured, never a glow.
+     ====================================================================== */
+  --elevation-workspace: 0 6px 24px -10px rgb(var(--color-overlay) / 0.16);
+  --elevation-card: 0 1px 2px 0 rgb(var(--color-overlay) / 0.04);
+  --elevation-card-interactive: 0 4px 12px -6px rgb(var(--color-overlay) / 0.12);
+  --elevation-button: 0 1px 1px 0 rgb(var(--color-overlay) / 0.08);
+  --elevation-dropdown: 0 12px 28px -10px rgb(var(--color-overlay) / 0.18);
+  --elevation-drawer: -8px 0 24px -12px rgb(var(--color-overlay) / 0.18);
+  --elevation-dialog: 0 20px 48px -16px rgb(var(--color-overlay) / 0.22);
+  --elevation-palette: 0 28px 60px -20px rgb(var(--color-overlay) / 0.26);
+  --elevation-tooltip: 0 4px 12px -4px rgb(var(--color-overlay) / 0.22);
+  --elevation-inset-line: inset 0 -1px 0 0 rgb(var(--color-border) / 1);
+
+  /* =========================================================================
+     Z-INDEX — fixed ladder, base through tooltip
+     ====================================================================== */
+  --z-base: 0;
+  --z-sticky: 100;
+  --z-nav: 200;
+  --z-dropdown: 300;
+  --z-popover: 400;
+  --z-drawer: 500;
+  --z-dialog: 600;
+  --z-toast: 700;
+  --z-tooltip: 800;
+
+  /* =========================================================================
+     MOTION
+     micro-feedback 100-150 · standard 150-250 · large surfaces 250-400
+     ====================================================================== */
+  --duration-micro: 120ms;
+  --duration-fast: 160ms;
+  --duration-standard: 200ms;
+  --duration-emphasis: 240ms;
+  --duration-surface: 260ms; /* drawers, dialogs */
+  --duration-slow: 320ms; /* in-place screen state changes */
+  --duration-spinner: 800ms;
+  /* Effectively instant. Used only by the reduced-motion override, where a true
+     0 would stop transitionend from firing. */
+  --duration-instant: 0.01ms;
+
+  --ease-out: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-in: cubic-bezier(0.55, 0.06, 0.68, 0.19);
+  --ease-in-out: cubic-bezier(0.45, 0.05, 0.55, 0.95);
+
+  /* Stagger step for a short entering sequence. */
+  --stagger-step: 60ms;
+
+  /* =========================================================================
+     OPACITY
+     ====================================================================== */
+  /* Tint strength for identity surfaces such as avatar tones. */
+  --opacity-tint: 0.14;
+  --opacity-disabled: 0.55;
+  --opacity-muted: 0.65;
+  /* Signals an unavailable capability. Held at 0.85 rather than lower so the
+     recessed label still clears 4.5:1 against its own surface. */
+  --opacity-recessed: 0.85;
+  --opacity-scrim: 0.44;
+
+  /* =========================================================================
+     SIZES — shell and control geometry
+     ====================================================================== */
+  --size-control-sm: 28px;
+  --size-control-md: 36px;
+  --size-control-lg: 44px;
+  /* The landing's module action: 40, between md and lg. Specified with the layout
+     that was approved outside this repo; neither existing control height is 40. */
+  --size-control-action: 40px;
+  --size-mark: 32px;
+  --size-logo: 30px;
+  /* One line of PanelTitle: the canvas wordmark's line box, held open on `/` where
+     the wordmark itself is suppressed so the environment string below it does not
+     move between routes. */
+  --size-wordmark: 1.75rem;
+  --size-row-comfortable: 48px;
+  --size-row-compact: 36px;
+  --size-step-row: 88px;
+  /* Floor for the workspace card so it never collapses onto its content. */
+  --size-workspace-min: 640px;
+  /* Section rail on a configuration screen. */
+  --size-rail: 260px;
+  /*
+   * Height a screen asks for when it wants the workspace card to fill the desk
+   * and scroll internally — a long form with a sticky footer, or a table with a
+   * sticky header. The subtraction is the canvas chrome the shell renders above
+   * and below the card: 64 of canvas padding, 74 of brand header, 33 of footnote.
+   * Screens that grow with their content do not use it.
+   */
+  --size-canvas-chrome: 171px;
+  --size-canvas-fit: calc(100svh - var(--size-canvas-chrome));
+  --size-drawer: 620px;
+  --size-palette: 640px;
+  /* Wider than a confirmation: the import shows a parsed preview table. */
+  --size-import: 720px;
+  /* Scroll height for a parsed preview inside an overlay. */
+  --size-preview: 240px;
+  --size-rule-short: 96px;
+
+  /* Table column budget, retained for the Discovery Feed. */
+  --size-col-title: 320px;
+  /* The tender identifier on the response tracker list, which has fewer columns than the
+     tables sharing --size-col-title: removing the aggregate document count and the
+     completeness bar freed 143px at 1190 and 311px at 1440, and the title was the column
+     that needed it. Wide enough that the longest of the fourteen tender names does not
+     truncate at all. */
+  --size-col-tender: 440px;
+  --size-col-assignee: 176px;
+  --size-col-reason: 176px;
+  --size-col-numeric: 104px;
+  --size-col-deadline: 132px;
+  --size-col-source: 116px;
+  --size-col-credential: 244px;
+  /* Partner names in the ranked comparison. Below this, three of five wrapped to
+     three lines and the rows ran to twice the height of their content. Above 156px
+     the table's min-content width exceeds its container at a 1190px viewport and the
+     Quoted value column gets clipped by the card's own overflow, so this is measured
+     at both ends rather than chosen. */
+  --size-col-partner: 152px;
+  /* The severity badge column in the flagged-risk list. Fixed, so a "Medium" badge
+     and a "High" badge start their sentence on the same left edge. */
+  --size-col-severity: 80px;
+  /* One small icon, for holding a tick's column open where the tick is conditional. */
+  --size-icon-sm: 14px;
+  /* One registry filter dropdown. Wide enough for the longest capability without
+     truncating it, narrow enough that two sit side by side above the table. */
+  --size-filter: 232px;
+  /* The completeness bar in a table cell. It used to take `--measure-panel`, a PANEL
+     measure applied to an inline bar, which forced its column to 374px and pushed the
+     tracker's min-content width 136px past its container at a 1280 viewport. A bar needs
+     enough length to read a proportion off, not a panel's worth. */
+  --size-bar-min: 88px;
+  /* The ordinal column on a setup step row. Fixed, so a two-digit mono ordinal and the
+     16px tick that can replace it occupy the same box and the rows keep one left axis
+     whichever is shown. */
+  --size-ordinal: 24px;
+
+  --measure-lede: 62ch;
+  --measure-prose: 68ch;
+  /*
+   * Width of a form column. Deliberately well clear of the prose measure rather
+   * than a few characters from it: controls span the column and prose is set to
+   * a reading width inside it, and the two have to look like different decisions.
+   */
+  --measure-form: 44rem;
+  --measure-panel: 320px;
+  --measure-workspace: 1680px;
+  /* The composition inside the workspace card is capped and centred rather than
+     tracking the card's width. Past this the text column outgrows its viewport
+     and the supporting right-hand column is marooned away from it. */
+  --measure-editorial: 1100px;
+  /* The module card grid: two columns, capped as wide as a 1440px viewport allows
+     once the canvas and page padding are taken out. Deliberately wider than the
+     editorial measure, because this page is four cards rather than prose, and the
+     width is what takes the longest description from four wrapped lines to three —
+     which is what lets the whole page fit one 900px viewport. */
+  --measure-cards: 1280px;
+  /* The MODULE DESCRIPTION'S measure, not the content wrapper's.
+     It capped the wrapper at 1180 until this pass, which was symmetric only while the
+     cap did not engage: above roughly a 1260 viewport it did, and 116px of the card's
+     inner width was stranded to the right of a left-anchored block. The wrapper now
+     fills, and the cap moved to the paragraph it was actually protecting.
+     504px rather than `--measure-prose`, whose 68ch computes to 600px at this font
+     size and so never engaged inside a card. 504 is measured: it holds the longest
+     description to four rendered lines at EVERY supported width, which is what makes
+     `--size-description-block` exact rather than viewport dependent. */
+  --measure-landing: 504px;
+  /* The module card's description block: three lines of SecondaryBody, so all four
+     cards are the same height by construction rather than by grid stretch — stretch
+     equalises the card and leaves the content ragged, which put a dead band above the
+     shortest card's button.
+
+     DERIVED, not a chosen number: four lines of the card-description style, so it
+     follows that style instead of silently disagreeing with it if either half is ever
+     changed. FOUR, and the 4 is a MEASUREMENT: the longest of the four descriptions
+     renders on four lines at 1190, 1280 and 1440, verified in Chrome after
+     `--measure-landing` moved onto the paragraph and fixed its measure at 504px.
+     An earlier pass could not reduce this to four and settled on five, because the
+     paragraph then took the card's full width and its line count changed with the
+     viewport — five at 1190, four at 1440 — so any single number was wrong somewhere.
+     Capping the measure removed that dependency, and with it the spare fifth line that
+     put 39.8px between the longest description and its button instead of 16.
+     All four cards still take the same height regardless of their own content, which is
+     what puts every button at an identical offset from its own card top, across both
+     rows rather than only within one. */
+  --type-description-leading: 1.7;
+  --size-description-block: calc(4 * var(--type-description-leading) * var(--type-body));
+  /* One module card once the row has stacked. Caps the width so a stacked card
+     stays portrait rather than spreading into a full-width banner; below this it
+     is simply full width, since it is a maximum. */
+  --measure-module: 30rem;
+  /* Step rows are capped tighter than the editorial block so a row's detail text
+     and its action stay adjacent instead of being pushed to opposite edges. */
+  --measure-step: 800px;
+}
+
+/* ============================================================================
+   DARK THEME — value swap only. No component, no utility and no structural
+   token changes below this line; only channel values.
+   ========================================================================= */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-canvas: 21 19 17;
+  --color-canvas-sunken: 15 14 12;
+  --color-background: 21 19 17;
+
+  --color-surface: 31 29 26;
+  --color-surface-raised: 37 34 31;
+  --color-surface-sunken: 27 25 22;
+  --color-surface-inset: 24 22 19;
+  --color-surface-hover: 40 37 33;
+  --color-surface-pressed: 46 43 38;
+  --color-surface-selected: 28 40 62;
+  --color-surface-overlay: 37 34 31;
+
+
+  --color-foreground: 243 240 234;
+  --color-foreground-secondary: 190 183 172;
+  --color-foreground-muted: 150 143 132;
+  --color-foreground-subtle: 116 109 99;
+  --color-foreground-inverted: 21 19 17;
+  --color-foreground-on-accent: 255 255 255;
+
+  --color-primary: 128 168 232;
+  --color-primary-hover: 154 188 241;
+  --color-primary-pressed: 106 148 214;
+  --color-primary-subtle: 26 38 57;
+  --color-primary-subtle-hover: 33 48 71;
+  --color-primary-border: 47 68 101;
+  --color-primary-foreground: 12 22 37;
+
+  --color-secondary: 37 34 31;
+  --color-secondary-hover: 45 42 38;
+  --color-secondary-pressed: 52 48 43;
+  --color-secondary-border: 66 61 55;
+  --color-secondary-foreground: 238 235 229;
+
+  --color-accent: 236 168 78;
+  --color-accent-hover: 243 186 110;
+  --color-accent-pressed: 216 148 62;
+  --color-accent-subtle: 52 38 16;
+  --color-accent-border: 94 68 27;
+  --color-accent-foreground: 33 21 4;
+
+  --accent-ai-wash: 37 32 24;
+  --accent-ai-wash-border: 70 60 42;
+
+  /* The leaf keeps its own colour in the dark theme; a brand mark does not
+     invert. Lifted very slightly for the darker ground. */
+  --color-emb-leaf: 74 208 119;
+
+  --color-neutral: 156 148 137;
+  --color-neutral-subtle: 37 34 31;
+  --color-neutral-border: 66 61 55;
+  --color-neutral-foreground: 18 17 15;
+
+  --color-success: 106 199 137;
+  --color-success-subtle: 19 41 27;
+  --color-success-border: 35 74 48;
+  --color-success-foreground: 9 26 15;
+
+  --color-warning: 226 176 76;
+  --color-warning-subtle: 47 37 15;
+  --color-warning-border: 88 67 27;
+  --color-warning-foreground: 31 22 4;
+
+  --color-destructive: 240 133 122;
+  --color-destructive-hover: 246 156 146;
+  --color-destructive-pressed: 222 113 102;
+  --color-destructive-subtle: 56 23 19;
+  --color-destructive-border: 98 41 34;
+  --color-destructive-foreground: 41 12 9;
+
+  --color-info: 130 173 245;
+  --color-info-subtle: 22 34 58;
+  --color-info-border: 44 63 100;
+  --color-info-foreground: 10 19 38;
+
+  --color-urgency-critical: 240 133 122;
+  --color-urgency-critical-subtle: 56 23 19;
+  --color-urgency-critical-border: 98 41 34;
+  --color-urgency-warning: 226 176 76;
+  --color-urgency-warning-subtle: 47 37 15;
+  --color-urgency-warning-border: 88 67 27;
+  --color-urgency-normal: 190 183 172;
+  --color-urgency-normal-subtle: 37 34 31;
+  --color-urgency-normal-border: 66 61 55;
+
+  --color-border: 54 50 45;
+  --color-border-strong: 78 72 65;
+  --color-border-subtle: 42 39 35;
+  --color-divider: 48 44 40;
+  --color-overlay: 0 0 0;
+  --color-focus: 128 168 232;
+  --color-selection: 33 48 71;
+  --color-disabled: 45 42 38;
+  --color-disabled-border: 78 72 65;
+  /* 4.81:1 on the fill above, matching the light theme's floor. The swap is a pure
+     value swap, so it holds the same standard rather than only the same names. */
+  --color-disabled-foreground: 156 149 137;
+
+  --color-chart-1: 128 168 232;
+  --color-chart-2: 86 194 216;
+  --color-chart-3: 236 168 78;
+  --color-chart-4: 173 143 250;
+  --color-chart-5: 244 133 176;
+  --color-chart-6: 106 205 226;
+  --color-chart-7: 160 206 94;
+  --color-chart-8: 156 148 137;
+
+  --opacity-scrim: 0.62;
+}

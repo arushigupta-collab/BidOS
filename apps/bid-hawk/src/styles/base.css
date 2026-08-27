@@ -1,0 +1,214 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    border-color: rgb(var(--color-border));
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+  }
+
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: var(--font-sans);
+    font-size: var(--type-body);
+    line-height: 1.55;
+    color: rgb(var(--color-foreground));
+    background-color: rgb(var(--color-canvas));
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: 'cv05' 1, 'cv11' 1, 'ss01' 1;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  figure,
+  blockquote,
+  dl,
+  dd {
+    margin: 0;
+  }
+
+  button,
+  input,
+  select,
+  textarea {
+    font: inherit;
+    color: inherit;
+    letter-spacing: inherit;
+  }
+
+  button {
+    background: none;
+    /* border-WIDTH, not the `border` shorthand. `border: 0` also sets
+       `border-style: none`, and a none style forces the USED border-width to 0 however
+       many pixels a utility asks for. Tailwind's `border` utility sets width only, so
+       every bordered button in the product — secondary Buttons, Select and MultiSelect
+       triggers, Chips, RadioGroup, the Checkbox root — was drawing no border at all,
+       measured as `border-style: none; border-width: 0px` on every one. Zeroing the
+       width instead keeps Preflight's `border-style: solid`, so a `border` utility
+       works as written. */
+    border-width: 0;
+    padding: 0;
+    cursor: pointer;
+  }
+
+  ul,
+  ol {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  table {
+    border-collapse: separate;
+    border-spacing: 0;
+  }
+
+  svg {
+    display: block;
+    flex-shrink: 0;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  /* Visible focus on every interactive element, suppressed for pointer input
+     so the ring reads as a keyboard affordance rather than a click artefact. */
+  :focus-visible {
+    outline: var(--border-width-strong) solid rgb(var(--color-focus));
+    outline-offset: var(--space-2);
+  }
+
+  :focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  ::selection {
+    background-color: rgb(var(--color-selection));
+    color: rgb(var(--color-foreground));
+  }
+
+  [hidden] {
+    display: none !important;
+  }
+}
+
+@layer components {
+  /* Scrollbars sit on the navigation and workspace planes without becoming a
+     visual element of their own. */
+  .scrollable {
+    scrollbar-width: thin;
+    scrollbar-color: rgb(var(--color-border-strong)) transparent;
+    overflow: auto;
+  }
+
+  .scrollable::-webkit-scrollbar {
+    width: var(--space-8);
+    height: var(--space-8);
+  }
+
+  .scrollable::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb {
+    background-color: rgb(var(--color-border-strong));
+    border-radius: var(--radius-full);
+    border: var(--space-2) solid transparent;
+    background-clip: content-box;
+  }
+
+  .scrollable::-webkit-scrollbar-thumb:hover {
+    background-color: rgb(var(--color-foreground-subtle));
+  }
+
+  /* Numeric alignment for tables, currency and countdowns. */
+  .numeric {
+    font-variant-numeric: tabular-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  /* vaul injects its own 500ms transition at runtime. A library never supplies
+     duration or easing, so the drawer is pulled back onto our surface timing:
+     260ms out on entry, ease-in on exit. Two attribute selectors outrank the
+     library's one, so no !important is needed. */
+  [data-vaul-drawer][data-vaul-drawer-direction='right'] {
+    transition: transform var(--duration-surface) var(--ease-out);
+    animation-duration: var(--duration-surface);
+    animation-timing-function: var(--ease-out);
+  }
+
+  [data-vaul-drawer][data-vaul-drawer-direction='right'][data-state='closed'] {
+    animation-timing-function: var(--ease-in);
+  }
+
+  [data-vaul-overlay][data-vaul-snap-points='false'][data-state] {
+    animation-duration: var(--duration-surface);
+    animation-timing-function: var(--ease-out);
+  }
+
+  /* Applied to any region containing agent-authored prose. */
+  .ai-wash {
+    background-color: rgb(var(--accent-ai-wash));
+    border-color: rgb(var(--accent-ai-wash-border));
+  }
+
+  .sr-only-focusable:not(:focus):not(:focus-within) {
+    position: absolute;
+    width: var(--space-hair);
+    height: var(--space-hair);
+    padding: 0;
+    margin: calc(-1 * var(--space-hair));
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border-width: 0;
+  }
+}
+
+@layer utilities {
+  .no-scrollbar {
+    scrollbar-width: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Reduced motion: opacity-only or instant. Transforms and looping animation
+   are removed rather than shortened. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: var(--duration-instant) !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: var(--duration-instant) !important;
+    scroll-behavior: auto !important;
+  }
+
+  .motion-reduce-opacity {
+    transition-property: opacity !important;
+    transition-duration: var(--duration-micro) !important;
+    transform: none !important;
+  }
+}
