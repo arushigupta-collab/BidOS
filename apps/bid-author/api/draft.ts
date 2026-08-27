@@ -19,7 +19,7 @@
  * came from has to treat all three as invented.
  */
 import { createClient } from '@supabase/supabase-js'
-import { tidyProse } from './tidyProse'
+import { tidyProse } from './_tidyProse'
 
 interface Req { method?: string; body?: unknown }
 interface Res { status: (code: number) => Res; json: (body: unknown) => void }
@@ -217,7 +217,7 @@ Punctuation, and this matters because the output is pasted into a bid document:
         DRAFT_SCHEMA,
         'draft',
       )
-      // Cleaned before it leaves. See api/tidyProse.ts.
+      // Cleaned before it leaves. See api/_tidyProse.ts.
       const draft = data as { title: string; paragraphs: string[] }
       res.status(200).json({
         title: tidyProse(draft.title),
