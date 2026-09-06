@@ -13,35 +13,36 @@ import { pagesNeedingVision } from '../../src/lib/ingest/pageIndex'
 const MAX_PAGES = 400
 
 export default handler(async (req: Req) => {
-  const { fileName, mime, dataBase64 } = req.body as {
-    fileName: string; mime: string; dataBase64: string
+  const { fileName, mime, stagingPath } = req.body as {
+    fileName: string; mime: string; stagingPath: string
   }
-  if (!dataBase64) throw new Error('No file was received')
+  if (!stagingPath) throw new Error('No file was received')
 
-  const bytes = new Uint8Array(Buffer.from(dataBase64, 'base64'))
-  const sha256 = createHash('sha256').update(bytes).digest('hex')
+  const client = db()
 
   /**
-   * The copy the file is stored from, taken BEFORE the parse.
+   * The bytes are fetched, not received.
    *
-   * pdf.js takes ownership of the typed array it is handed and detaches the
-   * underlying buffer, so `bytes` is zero-length the moment `loadPdf` returns.
-   * The upload below used `bytes`, which meant every tender uploaded through the
-   * screen was stored as a 0-byte file -- while the row beside it looked correct,
-   * because both the fingerprint and the page count are taken before the detach.
-   *
-   * Nothing failed anywhere. The signed URL served an empty PDF with a 200, and
-   * the only documents that did work had been put in storage by a script that
-   * never calls loadPdf.
+   * They used to arrive as base64 in this request's body, which cannot work on
+   * Vercel: a function's body is capped at 4.5 MB and base64 costs a third on top,
+   * so the 4 MB hero tender never reached this handler at all. See
+   * api/ingest/upload-url.ts.
    */
-  const forStorage = bytes.slice()
+  const { data: blob, error: downloadError } = await client.storage
+    .from('rfp-source')
+    .download(stagingPath)
+  if (downloadError) throw new Error(`storage: ${downloadError.message}`)
+
+  const bytes = new Uint8Array(await blob.arrayBuffer())
+  if (bytes.byteLength === 0) throw new Error('The uploaded file is empty')
+
+  const sha256 = createHash('sha256').update(bytes).digest('hex')
 
   const { pageCount, pages, scannedPages } = await loadPdf(bytes)
   if (pageCount > MAX_PAGES) {
+    await client.storage.from('rfp-source').remove([stagingPath])
     throw new Error(`${pageCount} pages exceeds the ${MAX_PAGES}-page limit for a single reading`)
   }
-
-  const client = db()
 
   /**
    * Keyed on the document's fingerprint, not on a fresh identifier.
@@ -65,21 +66,25 @@ export default handler(async (req: Req) => {
   const documentId = (found?.id as string) ?? randomUUID()
 
   /**
-   * The file itself, kept.
+   * The file itself, kept -- moved from where the browser put it into the place
+   * the viewer looks, now that the fingerprint is known.
    *
-   * It was not, and `storage_path` recorded a location nothing had ever been
-   * written to. Every figure this product extracts carries the page it came from,
-   * and the whole point of that is a reader being able to look; for an uploaded
-   * tender there was nothing to look at, and the viewer fell back to the one
-   * document that ships with the build.
+   * `storage_path` once recorded a location nothing had ever been written to.
+   * Every figure this product extracts carries the page it came from, and the
+   * whole point of that is a reader being able to look; for an uploaded tender
+   * there was nothing to look at, and the viewer fell back to the one document
+   * that ships with the build.
    *
-   * Upserted so a re-read of the same bytes replaces rather than fails.
+   * The destination is removed first because `move` fails onto an existing path,
+   * and re-reading the same document is a legitimate thing to want -- after a
+   * prompt change it is the whole point.
    */
   const storagePath = `${documentId}.pdf`
-  const { error: uploadError } = await client.storage
-    .from('rfp-source')
-    .upload(storagePath, forStorage, { contentType: mime || 'application/pdf', upsert: true })
-  if (uploadError) throw new Error(`storage: ${uploadError.message}`)
+  const store = client.storage.from('rfp-source')
+
+  await store.remove([storagePath])
+  const { error: moveError } = await store.move(stagingPath, storagePath)
+  if (moveError) throw new Error(`storage: ${moveError.message}`)
 
   const { error: docError } = await client.from('rfp_documents').upsert({
     id: documentId,

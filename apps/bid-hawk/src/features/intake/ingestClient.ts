@@ -7,6 +7,7 @@
  * that reveals its own length as it goes reads as a process nobody has measured.
  */
 import type { CommercialTerms, EligibilityRow, RiskFlag, WorkPackage } from '@/lib/ingest/stages'
+import { supabase } from '@/lib/supabase'
 
 export type StageId =
   | 'upload' | 'paginate' | 'vision' | 'locate'
@@ -79,13 +80,34 @@ async function post<T>(path: string, body: unknown): Promise<T> {
   return json
 }
 
-function toBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.onerror = () => reject(new Error(`${file.name} could not be read`))
-    reader.onload = () => resolve(String(reader.result).split(',')[1] ?? '')
-    reader.readAsDataURL(file)
-  })
+/**
+ * Puts the file in storage, and answers with where it went.
+ *
+ * Straight from the browser to Supabase, never through a function. The document
+ * used to be sent as base64 in the body of `/api/ingest/start`, and on Vercel
+ * that is impossible: a serverless function's request body is capped at 4.5 MB
+ * and base64 costs a third on top, so a 4 MB tender became a 5.34 MB body. The
+ * platform rejected it before the handler ran and replied with its own plain-text
+ * error page, which this client then tried to parse as JSON -- surfacing as
+ * `Unexpected token 'A'` at the very first stage. No plan raises that cap.
+ *
+ * The upload token is minted server-side and is good for this one path.
+ */
+async function putInStorage(file: File): Promise<string> {
+  const { path, token } = await post<{ path: string; token: string }>(
+    '/api/ingest/upload-url',
+    { fileName: file.name },
+  )
+
+  const client = await supabase()
+  if (!client) throw new Error('This build has no workspace connection configured')
+
+  const { error } = await client.storage
+    .from('rfp-source')
+    .uploadToSignedUrl(path, token, file, { contentType: file.type || 'application/pdf' })
+
+  if (error) throw new Error(`${file.name} could not be uploaded: ${error.message}`)
+  return path
 }
 
 export interface RunOptions {
@@ -127,11 +149,11 @@ export async function runIngest(file: File, options: RunOptions): Promise<Ingest
    * which is exactly how the first real failure here was reported.
    */
   const started = await timed('upload', async () => {
-    const dataBase64 = await toBase64(file)
+    const stagingPath = await putInStorage(file)
     return post<{
       documentId: string; fileName: string; pageCount: number
       scannedPages: number[]; visionPages: number[]
-    }>('/api/ingest/start', { fileName: file.name, mime: file.type || 'application/pdf', dataBase64 })
+    }>('/api/ingest/start', { fileName: file.name, mime: file.type || 'application/pdf', stagingPath })
   })
   onStage('paginate', {
     state: 'done',

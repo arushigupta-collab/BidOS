@@ -35,48 +35,65 @@ export default async function handler(req: Req, res: Res) {
 
   try {
     const body = req.body as {
-      op: 'upload' | 'sign' | 'remove'
+      op: 'upload-url' | 'record' | 'sign' | 'remove'
       documentId?: string
       fileName?: string
       mime?: string
-      dataBase64?: string
       fileId?: string
       storagePath?: string
     }
     const db = client()
 
-    if (body.op === 'upload') {
-      const bytes = new Uint8Array(Buffer.from(body.dataBase64 ?? '', 'base64'))
-      if (bytes.byteLength === 0) throw new Error('No file was received')
-      if (bytes.byteLength > MAX_BYTES) {
-        throw new Error(`${(bytes.byteLength / 1024 / 1024).toFixed(1)} MB exceeds the 25 MB limit for one file`)
-      }
-
-      /*
-       * Stored under a generated id rather than the sender's file name. Two
-       * partners both sending "Technical Proposal.pdf" would otherwise overwrite
-       * each other, and the second upload would silently replace the first
-       * partner's submission. The real name is kept in the row beside it.
-       */
+    /**
+     * Mints a one-shot URL the browser uploads to directly.
+     *
+     * The file used to travel through here as base64, which on Vercel caps it at
+     * roughly 3.3 MB however large the limit above claimed to be: a function's
+     * request body stops at 4.5 MB and base64 costs a third on top. A partner
+     * sending a real technical proposal would have hit the platform's own
+     * plain-text error page, not this handler's JSON.
+     *
+     * Stored under a generated id rather than the sender's file name. Two
+     * partners both sending "Technical Proposal.pdf" would otherwise overwrite
+     * each other, and the second upload would silently replace the first
+     * partner's submission. The real name is kept in the row beside it.
+     */
+    if (body.op === 'upload-url') {
       const id = randomUUID()
       const extension = (body.fileName ?? '').includes('.')
         ? `.${(body.fileName ?? '').split('.').pop()}`
         : ''
       const storagePath = `${body.documentId}/${id}${extension}`
 
-      const { error: uploadError } = await db.storage
+      const { data, error } = await db.storage.from(BUCKET).createSignedUploadUrl(storagePath)
+      if (error) throw new Error(error.message)
+
+      res.status(200).json({ path: data.path, token: data.token })
+      return
+    }
+
+    /** Records a file the browser has already put in the bucket. */
+    if (body.op === 'record') {
+      const { data: head, error: headError } = await db.storage
         .from(BUCKET)
-        .upload(storagePath, bytes, { contentType: body.mime || 'application/octet-stream' })
-      if (uploadError) throw new Error(uploadError.message)
+        .list(body.documentId!, { search: (body.storagePath ?? '').split('/').pop() })
+      if (headError) throw new Error(headError.message)
+
+      const size = head?.[0]?.metadata?.size ?? 0
+      if (!size) throw new Error('The upload did not arrive')
+      if (size > MAX_BYTES) {
+        await db.storage.from(BUCKET).remove([body.storagePath!])
+        throw new Error(`${(size / 1024 / 1024).toFixed(1)} MB exceeds the 25 MB limit for one file`)
+      }
 
       const { data, error } = await db
         .from('partner_files')
         .insert({
           document_id: body.documentId,
-          storage_path: storagePath,
+          storage_path: body.storagePath,
           original_name: body.fileName ?? 'file',
           mime: body.mime ?? null,
-          size_bytes: bytes.byteLength,
+          size_bytes: size,
         })
         .select('*')
         .single()
