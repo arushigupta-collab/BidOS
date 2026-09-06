@@ -163,3 +163,35 @@ describe('the commercial gates table', () => {
     expect(LONG[body.length]).toBe(' ')
   })
 })
+
+describe('bullet glyphs the model wrote itself', () => {
+  /*
+   * Observed on a live run. The schema asks for an array of sentences and the
+   * renderer draws the bullet, but the model returned two points in one item
+   * joined by a literal glyph -- so the slide showed a stray bullet mid-line.
+   */
+  it('removes a glyph the model put in the middle of a line', async () => {
+    const { unzipSync, strFromU8 } = await import('fflate')
+    const files = unzipSync(await buildDeck({
+      copy: {
+        ...COPY,
+        requirement: ['Pay the fee on the portal.• Maintain bid validity for 180 days.'],
+      },
+      terms: TERMS, title: 'A tender', tenderRef: null, issuingAuthority: null,
+    }))
+    const slide = strFromU8(files['ppt/slides/slide3.xml'])
+    expect(slide).not.toContain('•')
+    expect(slide).toContain('Pay the fee on the portal. Maintain bid validity')
+  })
+
+  it('drops a glyph the model put at the start of a line', async () => {
+    const { unzipSync, strFromU8 } = await import('fflate')
+    const files = unzipSync(await buildDeck({
+      copy: { ...COPY, requirement: ['• Complete implementation in nine months.'] },
+      terms: TERMS, title: 'A tender', tenderRef: null, issuingAuthority: null,
+    }))
+    const text = [...strFromU8(files['ppt/slides/slide3.xml']).matchAll(/<a:t>([^<]*)<\/a:t>/g)]
+      .map((m) => m[1])
+    expect(text).toContain('Complete implementation in nine months.')
+  })
+})

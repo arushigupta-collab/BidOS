@@ -51,8 +51,27 @@ export interface DeckSource {
 
 const EM_DASH = /\s*[—–]\s*/g
 
-/** The prompt forbids them; this is what makes it true. */
-const clean = (text: string): string => text.replace(EM_DASH, ', ').replace(/\s+/g, ' ').trim()
+/** A bullet glyph the model wrote into the middle of its own line. */
+const INLINE_BULLET = /\s*[•▪●·]\s*/g
+
+/**
+ * The prompt forbids em dashes; this is what makes it true. It also removes
+ * bullet glyphs, which is a different problem with the same cause.
+ *
+ * The schema asks for an array of sentences and the renderer draws the bullet.
+ * The model returned two points inside one array item joined by a literal
+ * bullet, so a slide rendered "...on the e-Tendering Portal.- Maintain bid
+ * validity for 180 days" as a single line with a stray glyph in the middle of it.
+ * A leading glyph is dropped; an interior one becomes a space, keeping the
+ * sentence punctuation already in front of it.
+ */
+const clean = (text: string): string =>
+  text
+    .replace(EM_DASH, ', ')
+    .replace(/^\s*[•▪●·-]\s*/, '')
+    .replace(INLINE_BULLET, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
 
 function chrome(slide: Slide, label: string, index: number): void {
   slide.addShape('rect', { x: 0, y: 0, w: W, h: 0.09, fill: { color: TCIL_BLUE } })
