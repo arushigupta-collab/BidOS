@@ -30,13 +30,29 @@ export default handler(async (req: Req) => {
   if (!rfpId) throw new Error('the deck needs a routed tender')
 
   const written = await writeDeck(terms, summary, packages)
-  const bytes = await buildDeck({
-    copy: written.data,
-    terms,
-    title,
-    tenderRef,
-    issuingAuthority,
-  })
+
+  /*
+   * Checked before rendering, because the renderer's failure on a missing field
+   * is a TypeError naming a property, and "Cannot read properties of undefined
+   * (reading 'slice')" tells a bid manager nothing about what went wrong.
+   *
+   * The schema is strict and this should not happen. It did once, on a run whose
+   * reasoning overran the budget: the answer parsed and was missing a section.
+   */
+  const copy = written.data
+  const missing = (['requirement', 'approach', 'capability'] as const).filter(
+    (key) => !Array.isArray(copy?.[key]) || copy[key].length === 0,
+  )
+  if (missing.length > 0) {
+    throw new Error(`the draft came back without ${missing.join(', ')}. Read it again.`)
+  }
+
+  let bytes: Uint8Array
+  try {
+    bytes = await buildDeck({ copy, terms, title, tenderRef, issuingAuthority })
+  } catch (caught) {
+    throw new Error(`rendering the deck failed: ${(caught as Error).message}`)
+  }
 
   const client = db()
 

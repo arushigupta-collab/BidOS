@@ -11,24 +11,23 @@
  * from the extracted facts, and the capability slide says on its face that it is
  * illustrative.
  */
-import PptxGenJSImport from 'pptxgenjs'
-
 /**
- * The one interop seam, stated once.
+ * pptxgenjs is loaded WHERE IT IS USED, not at module scope.
  *
- * `pptxgenjs` ships a CJS build and an ESM build behind an `exports` map, and its
- * types are a class merged with a namespace. Under the bundler resolution this
- * app builds with, the default import IS the class. Under the node16 resolution
- * Vercel compiles the functions with, TypeScript sees the module object instead
- * and calls the class not constructable.
+ * It is a browser-first library that reaches for `document` and `window` in
+ * places, and it drags jszip in behind it. Imported at the top of this file it
+ * runs during cold start, where a failure is not catchable: the function dies
+ * before the handler exists and Vercel answers FUNCTION_INVOCATION_FAILED with no
+ * detail -- which is exactly what `/api/ingest/deck` did while its four siblings,
+ * identical but for this one import, returned ordinary JSON errors.
  *
- * It is constructable: verified by importing the ESM build under Node itself and
- * calling `new`. The alternative to naming the seam here is two type errors in
- * every Vercel build -- and a build nobody can read clean is how four green
- * deployments sat on top of functions that could not start.
+ * Loaded inside `buildDeck`, any failure lands inside the handler's try and comes
+ * back as a message somebody can act on. It also keeps a 3 MB dependency off the
+ * cold path of a stage that only runs once per reading.
+ *
+ * The type stays static: `import type` is erased, so it costs nothing at runtime.
  */
 type PptxConstructor = typeof import('pptxgenjs').default
-const PptxGenJS = PptxGenJSImport as unknown as PptxConstructor
 type Slide = ReturnType<InstanceType<PptxConstructor>['addSlide']>
 import type { CommercialTerms } from './stages.js'
 import type { DeckCopy } from './stages.js'
@@ -143,6 +142,16 @@ function tighten(text: string): string {
 
 export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   const { copy, terms, title, tenderRef, issuingAuthority } = source
+
+  /*
+   * The interop seam, stated once. The package ships a CJS build and an ESM build
+   * behind an `exports` map and its types are a class merged with a namespace, so
+   * the default is the class under the bundler resolution this app builds with
+   * and the module object under the node16 resolution Vercel compiles with.
+   */
+  const imported = (await import('pptxgenjs')).default
+  const PptxGenJS = imported as unknown as PptxConstructor
+
   const pptx = new PptxGenJS()
   pptx.defineLayout({ name: 'BIDOS_16x9', width: W, height: H })
   pptx.layout = 'BIDOS_16x9'
