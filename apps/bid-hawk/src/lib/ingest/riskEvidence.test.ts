@@ -26,9 +26,9 @@
  */
 import { readFile } from 'node:fs/promises'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { loadPdf } from './loadPdf'
+import { loadPdf } from './loadPdf.js'
 import fixture from './__fixtures__/hero-extraction.json'
-import type { Page } from './pageIndex'
+import type { Page } from './pageIndex.js'
 
 interface Evidence { quote: string; page_no: number }
 interface Flag {

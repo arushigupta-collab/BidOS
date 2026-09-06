@@ -34,3 +34,7 @@ dist-offline/
 # Generated partner fixtures. Reproduced by fixtures/make-partner-responses.mjs,
 # which is committed; the twenty PDFs it writes are not.
 fixtures/partner-responses/
+
+# Vercel CLI local build output, used to reproduce the platform's own function
+# build. Reproducible with `vercel build`.
+.vercel/

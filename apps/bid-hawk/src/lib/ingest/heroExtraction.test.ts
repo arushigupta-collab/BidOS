@@ -23,10 +23,10 @@
  */
 import { readFile } from 'node:fs/promises'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { loadPdf } from './loadPdf'
-import { shiftTenderDates } from './dates'
+import { loadPdf } from './loadPdf.js'
+import { shiftTenderDates } from './dates.js'
 import fixture from './__fixtures__/hero-extraction.json'
-import type { Page } from './pageIndex'
+import type { Page } from './pageIndex.js'
 
 interface Cited { value: string | null; page_no: number | null; quote: string | null; confidence: number }
 const terms = fixture.extract as unknown as Record<string, Cited> & {

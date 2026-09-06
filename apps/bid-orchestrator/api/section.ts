@@ -10,7 +10,7 @@
  * does not contain is worse than no contents page.
  */
 import { createClient } from '@supabase/supabase-js'
-import { tidyProse } from './_tidyProse'
+import { tidyProse } from './_tidyProse.js'
 
 interface Req { method?: string; body?: unknown }
 interface Res { status: (code: number) => Res; json: (body: unknown) => void }

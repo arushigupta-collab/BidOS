@@ -5,9 +5,9 @@
  * document that turns out to be unreadable costs nothing to reject.
  */
 import { createHash, randomUUID } from 'node:crypto'
-import { db, handler, type Req } from '../_shared'
-import { loadPdf } from '../../src/lib/ingest/loadPdf'
-import { pagesNeedingVision } from '../../src/lib/ingest/pageIndex'
+import { db, handler, type Req } from '../_shared.js'
+import { loadPdf } from '../../src/lib/ingest/loadPdf.js'
+import { pagesNeedingVision } from '../../src/lib/ingest/pageIndex.js'
 
 /** Above this, a document is refused rather than silently costing a fortune. */
 const MAX_PAGES = 400

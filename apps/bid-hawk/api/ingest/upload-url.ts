@@ -16,7 +16,7 @@
  * key. The token is good for one upload to one path.
  */
 import { randomUUID } from 'node:crypto'
-import { db, handler, type Req } from '../_shared'
+import { db, handler, type Req } from '../_shared.js'
 
 /**
  * Uploads land here first, under a name nobody can guess.

@@ -9,10 +9,10 @@
  * Server-only. It holds the service-role key, which bypasses every policy.
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import { routeTender } from '../routingEngine'
-import type { Person, Tender } from '@/types'
-import { parseTenderDate, shiftTenderDates, toIso } from './dates'
-import type { CommercialTerms, EligibilityRow, RiskFlag, WorkPackage } from './stages'
+import { routeTender } from '../routingEngine.js'
+import type { Person, Tender } from '../../types/index.js'
+import { parseTenderDate, shiftTenderDates, toIso } from './dates.js'
+import type { CommercialTerms, EligibilityRow, RiskFlag, WorkPackage } from './stages.js'
 
 export interface IngestedRun {
   documentId: string

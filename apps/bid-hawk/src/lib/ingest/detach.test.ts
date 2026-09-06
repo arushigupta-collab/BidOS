@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import { loadPdf } from './loadPdf'
+import { loadPdf } from './loadPdf.js'
 
 /**
  * pdf.js takes ownership of the array it is handed.

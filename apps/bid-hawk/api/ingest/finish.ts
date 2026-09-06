@@ -5,9 +5,9 @@
  * this succeeds the upload has cost money but changed nothing anyone can see,
  * which is the correct failure mode for a pipeline with five fallible stages.
  */
-import { handler, type Req } from '../_shared'
-import { persistRun } from '../../src/lib/ingest/persist'
-import type { CommercialTerms, EligibilityRow, RiskFlag, WorkPackage } from '../../src/lib/ingest/stages'
+import { handler, type Req } from '../_shared.js'
+import { persistRun } from '../../src/lib/ingest/persist.js'
+import type { CommercialTerms, EligibilityRow, RiskFlag, WorkPackage } from '../../src/lib/ingest/stages.js'
 
 export default handler(async (req: Req) => {
   const { documentId, fileName, pageCount, results } = req.body as {

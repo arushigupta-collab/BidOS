@@ -13,7 +13,7 @@
  */
 import { mkdir, readFile, readdir, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import type { ModelCall } from './openrouter'
+import type { ModelCall } from './openrouter.js'
 
 export interface StageRecord<T = unknown> {
   stage: string

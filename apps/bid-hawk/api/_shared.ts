@@ -7,7 +7,7 @@
  * reaches a browser bundle.
  */
 import { createClient, type SupabaseClient } from '@supabase/supabase-js'
-import type { Page } from '../src/lib/ingest/pageIndex'
+import type { Page } from '../src/lib/ingest/pageIndex.js'
 
 export interface Req { method?: string; body?: unknown; query?: Record<string, string | string[]> }
 export interface Res {

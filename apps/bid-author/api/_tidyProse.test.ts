@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { tidyProse } from "./_tidyProse";
+import { tidyProse } from "./_tidyProse.js";
 
 /**
  * Generated prose is pasted into a bid document that a procurement officer reads,

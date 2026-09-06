@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { parseTenderDate, shiftTenderDates, toIso, yearShiftFor } from './dates'
+import { parseTenderDate, shiftTenderDates, toIso, yearShiftFor } from './dates.js'
 
 /** The three date fields exactly as extraction returned them from the real RFP. */
 const REAL = {

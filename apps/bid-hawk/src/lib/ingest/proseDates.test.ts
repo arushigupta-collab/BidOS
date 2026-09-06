@@ -19,7 +19,7 @@
  */
 import { describe, expect, it } from 'vitest'
 import fixture from './__fixtures__/hero-extraction.json'
-import { carryForward } from './dates'
+import { carryForward } from './dates.js'
 
 const summary = fixture.summarise as { bullets: string[]; condensed: string[] }
 const packages = (fixture.workpackages as {

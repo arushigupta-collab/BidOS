@@ -7,7 +7,7 @@
  * from every pattern that looks for it.
  */
 import { extractText, getDocumentProxy } from 'unpdf'
-import type { Page } from './pageIndex'
+import type { Page } from './pageIndex.js'
 
 export interface LoadedDocument {
   pageCount: number

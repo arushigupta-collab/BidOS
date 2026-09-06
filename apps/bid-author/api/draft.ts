@@ -19,7 +19,7 @@
  * came from has to treat all three as invented.
  */
 import { createClient } from '@supabase/supabase-js'
-import { tidyProse } from './_tidyProse'
+import { tidyProse } from './_tidyProse.js'
 
 interface Req { method?: string; body?: unknown }
 interface Res { status: (code: number) => Res; json: (body: unknown) => void }

@@ -5,18 +5,18 @@
  * anywhere: persistence is the caller's job, which keeps every stage a pure
  * function of its inputs and therefore testable against a recorded response.
  */
-import type { Content, ModelCall } from './openrouter'
-import { TEXT_MODEL, complete } from './openrouter'
-import { carryForward } from './dates'
-import { FIELD_SPECS, selectPages, type Page } from './pageIndex'
+import type { Content, ModelCall } from './openrouter.js'
+import { TEXT_MODEL, complete } from './openrouter.js'
+import { carryForward } from './dates.js'
+import { FIELD_SPECS, selectPages, type Page } from './pageIndex.js'
 import {
   COMMERCIAL_TERMS_SCHEMA, ELIGIBILITY_SCHEMA, RISK_SCHEMA,
   SUMMARY_SCHEMA, WORK_PACKAGE_SCHEMA,
-} from './schemas'
+} from './schemas.js'
 import {
   COMMERCIAL_SYSTEM, ELIGIBILITY_SYSTEM, RISK_SYSTEM,
   SUMMARY_SYSTEM, WORK_PACKAGE_SYSTEM,
-} from './prompts'
+} from './prompts.js'
 
 export interface StageResult<T> {
   data: T

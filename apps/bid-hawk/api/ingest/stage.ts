@@ -11,12 +11,12 @@
  * has to learn the difference between a tender and a fragment of one. Nothing is
  * written until every stage has succeeded.
  */
-import { handler, pagesFor, type Req } from '../_shared'
-import { COMPANY_PROFILE } from '../../src/lib/ingest/companyProfile'
+import { handler, pagesFor, type Req } from '../_shared.js'
+import { COMPANY_PROFILE } from '../../src/lib/ingest/companyProfile.js'
 import {
   deriveWorkPackages, extractCommercialTerms, extractEligibility, extractRisks, writeSummary,
   type CommercialTerms, type EligibilityRow, type RiskFlag,
-} from '../../src/lib/ingest/stages'
+} from '../../src/lib/ingest/stages.js'
 
 export type StageName = 'extract' | 'eligibility' | 'risks' | 'workpackages' | 'summarise'
 

@@ -12,8 +12,8 @@
  */
 import { readFile } from 'node:fs/promises'
 import { beforeAll, describe, expect, it } from 'vitest'
-import { loadPdf } from './loadPdf'
-import { FIELD_SPECS, pagesNeedingVision, selectPages, type Page } from './pageIndex'
+import { loadPdf } from './loadPdf.js'
+import { FIELD_SPECS, pagesNeedingVision, selectPages, type Page } from './pageIndex.js'
 
 let pages: Page[]
 let pageCount: number

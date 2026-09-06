@@ -1,4 +1,4 @@
-import type { Person, Tender } from '@/types'
+import type { Person, Tender } from '../types/index.js'
 
 /**
  * The assignation stage: given a tender and the bid managers on the workspace,
