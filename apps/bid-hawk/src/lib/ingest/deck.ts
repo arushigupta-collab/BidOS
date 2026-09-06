@@ -33,6 +33,7 @@ type Slide = ReturnType<InstanceType<PptxConstructor>['addSlide']>
 import type { CommercialTerms } from './stages.js'
 import type { DeckCopy } from './stages.js'
 import { TCIL, TCIL_BLUE, TCIL_INK, TCIL_MUTED, TCIL_RULE, TCIL_WASH, ILLUSTRATIVE_NOTE } from './tcil.js'
+import { TCIL_LOGO_PNG } from './tcilLogo.js'
 
 export const MAX_SLIDES = 6
 
@@ -73,12 +74,16 @@ const clean = (text: string): string =>
     .replace(/\s+/g, ' ')
     .trim()
 
+/**
+ * Only what changes per slide. The rule, the mark and the wordmark live on the
+ * master.
+ *
+ * Added there because pptxgenjs stores an image once per slide that draws it: on
+ * six slides the 51 KB mark became 306 KB of the file, in an artefact whose point
+ * is being small enough to send. A master holds it once, which is also what a
+ * master is for.
+ */
 function chrome(slide: Slide, label: string, index: number): void {
-  slide.addShape('rect', { x: 0, y: 0, w: W, h: 0.09, fill: { color: TCIL_BLUE } })
-  slide.addText(TCIL.short, {
-    x: MARGIN, y: H - 0.62, w: 2, h: 0.3,
-    fontSize: 10, bold: true, color: TCIL_BLUE, fontFace: 'Arial',
-  })
   slide.addText(label, {
     x: W / 2 - 2.5, y: H - 0.62, w: 5, h: 0.3,
     fontSize: 9, color: TCIL_MUTED, align: 'center', fontFace: 'Arial',
@@ -141,29 +146,56 @@ export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   const pptx = new PptxGenJS()
   pptx.defineLayout({ name: 'BIDOS_16x9', width: W, height: H })
   pptx.layout = 'BIDOS_16x9'
+
+  /* The mark, the accent rule and the wordmark, defined once for every slide. */
+  pptx.defineSlideMaster({
+    title: 'TCIL_CONTENT',
+    background: { color: 'FFFFFF' },
+    objects: [
+      { rect: { x: 0, y: 0, w: W, h: 0.09, fill: { color: TCIL_BLUE } } },
+      { image: { data: TCIL_LOGO_PNG, x: MARGIN, y: H - 0.72, w: 0.42, h: 0.42 } },
+      {
+        text: {
+          text: TCIL.short,
+          options: {
+            x: MARGIN + 0.5, y: H - 0.62, w: 2, h: 0.3,
+            fontSize: 10, bold: true, color: TCIL_BLUE, fontFace: 'Arial',
+          },
+        },
+      },
+    ],
+  })
+
+  pptx.defineSlideMaster({
+    title: 'TCIL_COVER',
+    background: { color: TCIL_INK },
+    objects: [
+      { rect: { x: 0, y: 0, w: 0.28, h: H, fill: { color: TCIL_BLUE } } },
+      /* Transparent, so it reads on the dark ground without a white plate. */
+      { image: { data: TCIL_LOGO_PNG, x: MARGIN + 0.3, y: 0.85, w: 1.15, h: 1.15 } },
+    ],
+  })
   pptx.author = TCIL.name
   pptx.company = TCIL.name
   pptx.title = `${TCIL.short} draft proposal — ${title}`
 
   /* 1 — Cover. The tender it answers, named, so the file is identifiable on its own. */
-  const cover = pptx.addSlide()
-  cover.background = { color: TCIL_INK }
-  cover.addShape('rect', { x: 0, y: 0, w: 0.28, h: H, fill: { color: TCIL_BLUE } })
+  const cover = pptx.addSlide({ masterName: 'TCIL_COVER' })
   cover.addText(TCIL.short, {
-    x: MARGIN + 0.3, y: 1.5, w: 6, h: 0.9,
+    x: MARGIN + 0.3, y: 2.15, w: 6, h: 0.9,
     fontSize: 54, bold: true, color: 'FFFFFF', fontFace: 'Arial', charSpacing: 2,
   })
   cover.addText(TCIL.name, {
-    x: MARGIN + 0.3, y: 2.42, w: 8.5, h: 0.4,
+    x: MARGIN + 0.3, y: 3.07, w: 8.5, h: 0.4,
     fontSize: 13, color: 'C9D4EC', fontFace: 'Arial',
   })
   cover.addText('DRAFT PROPOSAL', {
-    x: MARGIN + 0.3, y: 3.5, w: 6, h: 0.4,
+    x: MARGIN + 0.3, y: 3.95, w: 6, h: 0.4,
     fontSize: 12, bold: true, color: TCIL_BLUE === '0233AC' ? '7FA0E8' : 'FFFFFF',
     fontFace: 'Arial', charSpacing: 3,
   })
   cover.addText(clean(title), {
-    x: MARGIN + 0.3, y: 3.95, w: W - MARGIN * 2 - 0.6, h: 1.6,
+    x: MARGIN + 0.3, y: 4.4, w: W - MARGIN * 2 - 0.6, h: 1.5,
     fontSize: 22, color: 'FFFFFF', fontFace: 'Arial', valign: 'top',
   })
   cover.addText(
@@ -172,7 +204,7 @@ export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   )
 
   /* 2 — Who is bidding. Public facts only; nothing here is drafted. */
-  const company = pptx.addSlide()
+  const company = pptx.addSlide({ masterName: 'TCIL_CONTENT' })
   heading(company, TCIL.name)
   company.addText(TCIL.standing, {
     x: MARGIN, y: 1.62, w: W - MARGIN * 2, h: 0.35,
@@ -193,19 +225,19 @@ export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   chrome(company, 'The bidder', 2)
 
   /* 3 — What the buyer asked for, from the reading. */
-  const requirement = pptx.addSlide()
+  const requirement = pptx.addSlide({ masterName: 'TCIL_CONTENT' })
   heading(requirement, copy.requirementTitle)
   bullets(requirement, copy.requirement)
   chrome(requirement, 'The requirement', 3)
 
   /* 4 — How it would be delivered. */
-  const approach = pptx.addSlide()
+  const approach = pptx.addSlide({ masterName: 'TCIL_CONTENT' })
   heading(approach, copy.approachTitle)
   bullets(approach, copy.approach)
   chrome(approach, 'Technical approach', 4)
 
   /* 5 — Capability, labelled as illustrative ON the slide. */
-  const capability = pptx.addSlide()
+  const capability = pptx.addSlide({ masterName: 'TCIL_CONTENT' })
   heading(capability, 'Capability')
   capability.addText(ILLUSTRATIVE_NOTE, {
     x: MARGIN, y: 1.6, w: W - MARGIN * 2, h: 0.4,
@@ -229,7 +261,7 @@ export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   chrome(capability, 'Capability', 5)
 
   /* 6 — What it costs to enter, straight from the extracted terms. */
-  const gates = pptx.addSlide()
+  const gates = pptx.addSlide({ masterName: 'TCIL_CONTENT' })
   heading(gates, 'What this tender demands')
   const rows: [string, string][] = [
     ['Selection method', terms.selection_method?.value ?? EMPTY],

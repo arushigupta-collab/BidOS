@@ -195,3 +195,51 @@ describe('bullet glyphs the model wrote itself', () => {
     expect(text).toContain('Complete implementation in nine months.')
   })
 })
+
+describe('the TCIL mark', () => {
+  /*
+   * Embedded rather than read from disk: a file under public/ is served to
+   * browsers and is not traced into a serverless function bundle, so reading it
+   * at render time would work locally and fail once deployed.
+   */
+  it('reaches every slide, through the master that carries it', async () => {
+    const { unzipSync, strFromU8 } = await import('fflate')
+    const files = unzipSync(await buildDeck({
+      copy: COPY, terms: TERMS, title: 'A tender', tenderRef: 'REF/1', issuingAuthority: 'A buyer',
+    }))
+
+    const slides = Object.keys(files).filter((n) => /^ppt\/slides\/slide\d+\.xml$/.test(n))
+    expect(slides).toHaveLength(MAX_SLIDES)
+
+    /*
+     * Followed through the relationships rather than asserted on the layouts
+     * directly: pptxgenjs also emits a default blank layout that nothing uses,
+     * so "every layout draws the mark" is false while the deck is still correct.
+     * What matters is that every SLIDE resolves to a layout that does.
+     */
+    for (const slide of slides) {
+      const name = slide.split('/').pop() as string
+      const rels = strFromU8(files[`ppt/slides/_rels/${name}.rels`])
+      const layout = /slideLayout(\d+)\.xml/.exec(rels)?.[1]
+      expect(layout, `${slide} is not bound to a layout`).toBeDefined()
+
+      const layoutRels = strFromU8(files[`ppt/slideLayouts/_rels/slideLayout${layout}.xml.rels`])
+      expect(layoutRels, `${slide} resolves to a layout with no mark`).toMatch(/\.png/)
+    }
+  })
+
+  /*
+   * pptxgenjs stores an image once per slide that draws it. Drawn directly, the
+   * 51 KB mark became 306 KB of a file whose whole point is being small enough to
+   * send. On the masters it is stored once each, and there are two: the cover is
+   * dark with the mark large, the content slides light with it in the footer.
+   */
+  it('stores the mark once per master, not once per slide', async () => {
+    const { unzipSync } = await import('fflate')
+    const files = unzipSync(await buildDeck({
+      copy: COPY, terms: TERMS, title: 'A tender', tenderRef: null, issuingAuthority: null,
+    }))
+    const media = Object.keys(files).filter((n) => n.endsWith('.png'))
+    expect(media).toHaveLength(2)
+  })
+})
