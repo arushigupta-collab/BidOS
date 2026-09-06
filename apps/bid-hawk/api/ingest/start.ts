@@ -21,6 +21,21 @@ export default handler(async (req: Req) => {
   const bytes = new Uint8Array(Buffer.from(dataBase64, 'base64'))
   const sha256 = createHash('sha256').update(bytes).digest('hex')
 
+  /**
+   * The copy the file is stored from, taken BEFORE the parse.
+   *
+   * pdf.js takes ownership of the typed array it is handed and detaches the
+   * underlying buffer, so `bytes` is zero-length the moment `loadPdf` returns.
+   * The upload below used `bytes`, which meant every tender uploaded through the
+   * screen was stored as a 0-byte file -- while the row beside it looked correct,
+   * because both the fingerprint and the page count are taken before the detach.
+   *
+   * Nothing failed anywhere. The signed URL served an empty PDF with a 200, and
+   * the only documents that did work had been put in storage by a script that
+   * never calls loadPdf.
+   */
+  const forStorage = bytes.slice()
+
   const { pageCount, pages, scannedPages } = await loadPdf(bytes)
   if (pageCount > MAX_PAGES) {
     throw new Error(`${pageCount} pages exceeds the ${MAX_PAGES}-page limit for a single reading`)
@@ -63,7 +78,7 @@ export default handler(async (req: Req) => {
   const storagePath = `${documentId}.pdf`
   const { error: uploadError } = await client.storage
     .from('rfp-source')
-    .upload(storagePath, bytes, { contentType: mime || 'application/pdf', upsert: true })
+    .upload(storagePath, forStorage, { contentType: mime || 'application/pdf', upsert: true })
   if (uploadError) throw new Error(`storage: ${uploadError.message}`)
 
   const { error: docError } = await client.from('rfp_documents').upsert({
