@@ -179,6 +179,24 @@ function Outcome({ outcome, onReset }: { outcome: IngestOutcome; onReset: () => 
           Open the summary
           <ArrowRight width={ICON.md} height={ICON.md} aria-hidden />
         </Link>
+        {/*
+          * A plain anchor with `download`, not a button that fetches. The link is
+          * already signed and expires on its own; routing it through JavaScript
+          * would only add a way for it to fail.
+          *
+          * Absent rather than disabled when the draft failed: the stage row above
+          * already carries the reason, and a dead control repeats it worse.
+          */}
+        {outcome.deckUrl ? (
+          <a
+            href={outcome.deckUrl}
+            download
+            className={buttonClasses({ variant: 'secondary' })}
+          >
+            Draft proposal
+            <span className="ml-4 font-mono text-metadata text-fg-muted">.pptx</span>
+          </a>
+        ) : null}
         <Button variant="ghost" onClick={onReset}>
           Read another
         </Button>

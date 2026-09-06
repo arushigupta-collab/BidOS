@@ -10,5 +10,9 @@
     {
       "path": "./tsconfig.api.json"
     }
-  ]
+  ],
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true
+  }
 }

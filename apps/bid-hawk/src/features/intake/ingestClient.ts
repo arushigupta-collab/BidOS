@@ -11,7 +11,7 @@ import { supabase } from '@/lib/supabase'
 
 export type StageId =
   | 'upload' | 'paginate' | 'vision' | 'locate'
-  | 'extract' | 'eligibility' | 'risks' | 'workpackages' | 'summarise' | 'route'
+  | 'extract' | 'eligibility' | 'risks' | 'workpackages' | 'summarise' | 'route' | 'deck'
 
 export type StageState = 'waiting' | 'running' | 'done' | 'skipped' | 'failed'
 
@@ -46,6 +46,7 @@ export const STAGES: StageSpec[] = [
   { id: 'workpackages', label: 'Split the work', detail: 'Action items and forms for each role', by: 'model' },
   { id: 'summarise', label: 'Write summary', detail: 'The brief a bid manager reads first', by: 'model' },
   { id: 'route', label: 'Assign owner', detail: 'Match domain and region to a bid manager', by: 'rules' },
+  { id: 'deck', label: 'Draft the proposal', detail: 'Six slides in TCIL branding, from what was read', by: 'model' },
 ]
 
 export interface StageProgress {
@@ -67,16 +68,51 @@ export interface IngestOutcome {
   managerId: string
   shift: number
   results: IngestResults
+  /** A one-hour link to the draft deck, or null if drafting it failed. */
+  deckUrl: string | null
 }
 
+/**
+ * Posts to a pipeline endpoint, and refuses to let a non-JSON reply become a
+ * parse error.
+ *
+ * `res.json()` was called unconditionally, so anything that answered with
+ * something other than JSON surfaced as a JavaScript error about the first
+ * character of the body. That has now happened twice with two different causes
+ * and neither message named either: Vercel's plain-text page over a rejected
+ * request read as `Unexpected token 'A'`, and an empty 404 from an endpoint the
+ * dev server had not registered read as `Unexpected end of JSON input`.
+ *
+ * Both are ordinary infrastructure answers. The stage row is the only place a
+ * reader finds out why a reading stopped, so it gets the status and what the
+ * server actually said.
+ */
 async function post<T>(path: string, body: unknown): Promise<T> {
   const res = await fetch(path, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(body),
   })
-  const json = (await res.json()) as T & { error?: string }
-  if (!res.ok || json.error) throw new Error(json.error ?? `${path} failed`)
+
+  const text = await res.text()
+
+  let json: (T & { error?: string }) | null = null
+  try {
+    json = text ? (JSON.parse(text) as T & { error?: string }) : null
+  } catch {
+    json = null
+  }
+
+  if (!json) {
+    const detail = text.trim().split('\n')[0]?.slice(0, 120)
+    throw new Error(
+      res.status === 404
+        ? `${path} is not deployed on this server (404). Restart it if the endpoint is new.`
+        : `${path} answered ${res.status} with ${detail ? `"${detail}"` : 'an empty body'}`,
+    )
+  }
+
+  if (!res.ok || json.error) throw new Error(json.error ?? `${path} failed (${res.status})`)
   return json
 }
 
@@ -202,5 +238,30 @@ export async function runIngest(file: File, options: RunOptions): Promise<Ingest
       results,
     }))
 
-  return { ...outcome, results }
+  /**
+   * Last, and deliberately not fatal.
+   *
+   * Every stage before this one is a precondition of the tender existing at all,
+   * so a failure there has to abandon the reading. This one makes an artefact
+   * FROM a tender that already exists and is already routed -- so if the model or
+   * the renderer fails, the row it failed on says so and the tender stands.
+   */
+  let deckUrl: string | null = null
+  try {
+    const deck = await timed('deck', () =>
+      post<{ url: string | null; bytes: number }>('/api/ingest/deck', {
+        rfpId: outcome.rfpId,
+        terms: results.extract,
+        summary: results.summarise,
+        packages: results.workpackages?.packages ?? [],
+        title: results.extract?.title?.value ?? started.fileName,
+        tenderRef: results.extract?.tender_ref?.value ?? null,
+        issuingAuthority: results.extract?.issuing_authority?.value ?? null,
+      }))
+    deckUrl = deck.url
+  } catch {
+    // `timed` has already marked the row failed with the reason on it.
+  }
+
+  return { ...outcome, results, deckUrl }
 }

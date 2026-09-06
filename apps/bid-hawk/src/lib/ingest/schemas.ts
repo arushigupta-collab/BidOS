@@ -294,3 +294,67 @@ export const WORK_PACKAGE_SCHEMA = {
     },
   },
 } as const
+
+/**
+ * The written half of the draft proposal deck.
+ *
+ * Deliberately narrow. The deck is six slides and three of them are fixed --
+ * cover, company, commercials -- so the model writes only the two that depend on
+ * what the tender actually says, plus the capability lines it can support.
+ *
+ * Counts are constrained rather than suggested because a slide is a fixed
+ * rectangle: seven bullets do not become a smaller font, they run off the bottom.
+ */
+export const DECK_SCHEMA = {
+  name: 'proposal_deck',
+  schema: {
+    type: 'object',
+    additionalProperties: false,
+    required: ['requirementTitle', 'requirement', 'approachTitle', 'approach', 'capability'],
+    properties: {
+      requirementTitle: {
+        type: 'string',
+        description: 'Six words at most, naming what the buyer is procuring. Not the tender title verbatim.',
+      },
+      requirement: {
+        type: 'array',
+        minItems: 3,
+        maxItems: 5,
+        description:
+          'What the buyer needs and why, in the buyer\'s own terms. One sentence each, under 22 words. ' +
+          'Drawn only from the extracted tender facts -- state nothing the tender does not.',
+        items: { type: 'string' },
+      },
+      approachTitle: {
+        type: 'string',
+        description: 'Six words at most, naming the delivery approach.',
+      },
+      approach: {
+        type: 'array',
+        minItems: 4,
+        maxItems: 5,
+        description:
+          'How the work would be delivered, as sequenced phases. One sentence each, under 22 words. ' +
+          'Each must answer something the tender asks for; no generic consulting language.',
+        items: { type: 'string' },
+      },
+      capability: {
+        type: 'array',
+        minItems: 3,
+        maxItems: 4,
+        description:
+          'Illustrative capability claims relevant to THIS tender, each a short label and a one-line ' +
+          'substantiation. These are placeholders for a real reference and must not name a real project.',
+        items: {
+          type: 'object',
+          additionalProperties: false,
+          required: ['label', 'detail'],
+          properties: {
+            label: { type: 'string', description: 'Three words at most.' },
+            detail: { type: 'string', description: 'One sentence, under 18 words.' },
+          },
+        },
+      },
+    },
+  },
+} as const

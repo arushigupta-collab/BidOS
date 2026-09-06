@@ -11,11 +11,11 @@ import { carryForward } from './dates.js'
 import { FIELD_SPECS, selectPages, type Page } from './pageIndex.js'
 import {
   COMMERCIAL_TERMS_SCHEMA, ELIGIBILITY_SCHEMA, RISK_SCHEMA,
-  SUMMARY_SCHEMA, WORK_PACKAGE_SCHEMA,
+  SUMMARY_SCHEMA, WORK_PACKAGE_SCHEMA, DECK_SCHEMA,
 } from './schemas.js'
 import {
   COMMERCIAL_SYSTEM, ELIGIBILITY_SYSTEM, RISK_SYSTEM,
-  SUMMARY_SYSTEM, WORK_PACKAGE_SYSTEM,
+  SUMMARY_SYSTEM, WORK_PACKAGE_SYSTEM, DECK_SYSTEM,
 } from './prompts.js'
 
 export interface StageResult<T> {
@@ -273,5 +273,55 @@ export async function deriveWorkPackages(
     // Observed ~11.8k, of which 8.2k was reasoning. The largest output of the five.
     maxTokens: 24_000,
   })
+  return { data: result.data, calls: [result.call] }
+}
+
+export interface DeckCopy {
+  requirementTitle: string
+  requirement: string[]
+  approachTitle: string
+  approach: string[]
+  capability: { label: string; detail: string }[]
+}
+
+/**
+ * The written half of the draft proposal deck.
+ *
+ * Reads the extracted facts and the summary, never the pages. The deck argues
+ * from what the reading established; going back to the document here would let a
+ * slide assert something the tender detail page beside it contradicts, and the
+ * two are read minutes apart by the same person.
+ */
+export async function writeDeck(
+  terms: CommercialTerms,
+  summary: { bullets: string[] },
+  packages: WorkPackage[],
+): Promise<StageResult<DeckCopy>> {
+  const facts = JSON.stringify(
+    {
+      terms,
+      summary: summary.bullets,
+      // The roles and their briefs say what the work actually involves, which is
+      // what an approach slide has to be built from.
+      scope: packages.map((p) => ({ role: p.role_id, brief: p.brief })),
+    },
+    null,
+    2,
+  )
+
+  const result = await complete<DeckCopy>({
+    stage: 'deck',
+    system: DECK_SYSTEM,
+    content: asText(`${dateBlock(terms)}--- THE FACTS ---\n${facts}`),
+    schema: DECK_SCHEMA as never,
+    model: TEXT_MODEL,
+    /*
+     * Summarise's budget with headroom. It writes a comparable amount of prose
+     * and needed 12k once its reasoning was counted; this one also has to hold
+     * the work packages in context, so it gets 14k.
+     */
+    maxTokens: 14_000,
+  })
+
   return { data: result.data, calls: [result.call] }
 }

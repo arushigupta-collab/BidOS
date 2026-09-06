@@ -3,6 +3,7 @@ import type { Source, Tender } from '@/types'
 import { Badge, Countdown } from '@/components/ui'
 import { platformShortLabel } from '@/data/seed/platforms'
 import { ViewRfpButton } from '@/components/shared/ViewRfpButton'
+import { DeckButton } from '@/components/shared/DeckButton'
 
 export interface SummaryHeaderProps {
   tender: Tender
@@ -67,6 +68,9 @@ export function SummaryHeader({ tender, source, isUploaded }: SummaryHeaderProps
         <div className="flex shrink-0 items-center gap-8">
           {/* The shared control, so the tracker and the ranked comparison cannot drift
               from this one. Rendered output is unchanged. */}
+          {/* Only a reading has a draft; a seeded tender was never put through
+              the pipeline, so the button resolves to nothing and renders nothing. */}
+          <DeckButton rfpId={isUploaded ? tender.id : null} />
           <ViewRfpButton
             variant="primary"
             title={tender.title}
