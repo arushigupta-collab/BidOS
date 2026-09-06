@@ -27,6 +27,8 @@
  *
  * The type stays static: `import type` is erased, so it costs nothing at runtime.
  */
+import { createRequire } from 'node:module'
+
 type PptxConstructor = typeof import('pptxgenjs').default
 type Slide = ReturnType<InstanceType<PptxConstructor>['addSlide']>
 import type { CommercialTerms } from './stages.js'
@@ -144,13 +146,20 @@ export async function buildDeck(source: DeckSource): Promise<Uint8Array> {
   const { copy, terms, title, tenderRef, issuingAuthority } = source
 
   /*
-   * The interop seam, stated once. The package ships a CJS build and an ESM build
-   * behind an `exports` map and its types are a class merged with a namespace, so
-   * the default is the class under the bundler resolution this app builds with
-   * and the module object under the node16 resolution Vercel compiles with.
+   * Required, not imported, and that is not a style choice.
+   *
+   * pptxgenjs publishes both builds behind an `exports` map. `await import()` here
+   * asked for the ESM one, and Vercel's bundler rewrote that dynamic import into a
+   * require -- so the runtime evaluated an ESM file as CommonJS and threw "Cannot
+   * use import statement outside a module" from inside the render.
+   *
+   * `createRequire` asks for the `require` condition explicitly, so the CJS build
+   * is loaded by the loader it was written for, whatever the bundler does around
+   * it. Still inside the function rather than at module scope: a failure in here
+   * is catchable, and one during cold start is not.
    */
-  const imported = (await import('pptxgenjs')).default
-  const PptxGenJS = imported as unknown as PptxConstructor
+  const require = createRequire(import.meta.url)
+  const PptxGenJS = require('pptxgenjs') as PptxConstructor
 
   const pptx = new PptxGenJS()
   pptx.defineLayout({ name: 'BIDOS_16x9', width: W, height: H })
