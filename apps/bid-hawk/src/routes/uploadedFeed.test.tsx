@@ -186,6 +186,68 @@ describe('its summary page', () => {
     // And somebody to hand it to. The owner arrives with the reading; so does the
     // roster, because a workspace holding no people cannot supply one.
     expect(screen.getByText('Anand Raghunathan')).toBeInTheDocument()
-    expect(screen.getAllByRole('button', { name: 'Assign' }).length).toBeGreaterThan(0)
+    expect(screen.getAllByRole('button', { name: /^Assign to / }).length).toBeGreaterThan(0)
+  })
+})
+
+/**
+ * Reassignment, on a reading whose workspace holds no people of its own.
+ *
+ * This is the state the demo actually runs in: nothing has been set up, so the
+ * roster on screen comes back with the reading. The owner lookup used the
+ * WORKSPACE'S people instead of that roster, so clicking Assign set an id,
+ * matched nobody, fell back to the routed owner and changed nothing -- with a
+ * toast reading "The owner now owns this bid", which was the only visible clue.
+ *
+ * 428 tests passed while that shipped. These are the ones that would not have.
+ */
+describe('Reassigning a reading', () => {
+  beforeEach(() => {
+    useWorkspace.setState({
+      // Exactly as a fresh visit: no local people, roster from the reading.
+      sources: [...SOURCES], people: [], tenders: [...TENDERS],
+      sourcesRevealed: true, peopleRevealed: true,
+      uploadedTenders: [UPLOADED],
+      uploadedAssignments: new Map([[UPLOADED.id, OWNER]]),
+      uploadedManagers: [OWNER.person, ALTERNATE],
+    })
+  })
+
+  it('shows the new owner after assigning an alternate', async () => {
+    const { act, fireEvent } = await import('@testing-library/react')
+    renderAt(`/feed/${UPLOADED.id}`)
+
+    const block = await waitFor(() => screen.getByLabelText(/assignment/i))
+    await waitFor(() => expect(block).toHaveTextContent(OWNER.person.name))
+
+    // The alternate's own button, by name rather than by position.
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: `Assign to ${ALTERNATE.name}` }))
+    })
+
+    await waitFor(() => {
+      expect(
+        within(screen.getByLabelText(/assignment/i)).getByText(ALTERNATE.name),
+      ).toBeInTheDocument()
+    })
+  })
+
+  /*
+   * The fallback string is the tell. It only renders when the id set by the click
+   * matches nobody in the roster the click came from, which is the bug itself.
+   */
+  it('names the person in the confirmation, never "The owner"', async () => {
+    const { act, fireEvent } = await import('@testing-library/react')
+    renderAt(`/feed/${UPLOADED.id}`)
+
+    await waitFor(() => screen.getByLabelText(/assignment/i))
+    await act(async () => {
+      fireEvent.click(screen.getByRole('button', { name: `Assign to ${ALTERNATE.name}` }))
+    })
+
+    await waitFor(() => {
+      expect(document.body.textContent).toContain(`${ALTERNATE.name} now owns this bid`)
+    })
+    expect(document.body.textContent).not.toContain('The owner now owns this bid')
   })
 })

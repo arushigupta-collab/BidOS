@@ -158,8 +158,9 @@ describe('Focus order, RFP summary', () => {
     const order = tabOrder()
     const view = order.indexOf('View RFP')
     // Reassignment is a list of alternates now, each with its own Assign, rather
-    // than one select. The first of them stands where the select did.
-    const assign = order.indexOf('Assign')
+    // than one select. The first of them stands where the select did. Each button
+    // is named for the person it hands the bid to, so the label carries a name.
+    const assign = order.findIndex((name) => name.startsWith('Assign to '))
     const next = order.indexOf('Next')
 
     expect(view).toBeGreaterThanOrEqual(0)

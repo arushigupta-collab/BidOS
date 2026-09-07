@@ -112,7 +112,18 @@ function Alternate({
           {covers || 'No domains or regions recorded'}
         </p>
       </div>
-      <Button variant="ghost" size="sm" onClick={() => onAssign(person.id)}>
+      {/*
+        * Named for the person it hands the bid to. Four buttons all reading
+        * "Assign" are one button as far as a screen reader's control list is
+        * concerned, and the visible label stays short because the name is on the
+        * row beside it.
+        */}
+      <Button
+        variant="ghost"
+        size="sm"
+        aria-label={`Assign to ${person.name}`}
+        onClick={() => onAssign(person.id)}
+      >
         Assign
       </Button>
     </div>

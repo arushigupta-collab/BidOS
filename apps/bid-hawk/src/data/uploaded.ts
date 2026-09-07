@@ -282,3 +282,27 @@ export async function fetchUploadedTenders(): Promise<UploadedFeed> {
 
   return { tenders, assignments, managers: [...managerById.values()] }
 }
+
+/**
+ * Records a change of owner on a reading.
+ *
+ * Reassignment was a `useState` and nothing else: it survived until the next
+ * navigation, and Bid Orchestrator -- whose dashboard filters on
+ * `assigned_manager_id` -- never learned about it. So the tender stayed in the
+ * original manager's queue while Bid Hawk showed it as somebody else's, which is
+ * worse than not offering the control.
+ *
+ * Only a reading can be reassigned. A seeded tender has no row to write to, and
+ * its owner is derived from the routing engine on every render by design.
+ */
+export async function setAssignedManager(rfpId: string, managerId: string): Promise<void> {
+  const db = await supabase()
+  if (!db) return
+
+  const { error } = await db
+    .from('rfps')
+    .update({ assigned_manager_id: managerId })
+    .eq('id', rfpId)
+
+  if (error) throw new Error(`rfps: ${error.message}`)
+}

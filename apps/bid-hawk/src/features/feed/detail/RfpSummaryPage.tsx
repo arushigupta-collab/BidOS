@@ -5,6 +5,7 @@ import { Button, EmptyState } from '@/components/ui'
 import { toast } from '@/lib/toast'
 import { ICON } from '@/lib/tokens'
 import { useWorkspace } from '@/store/useWorkspace'
+import { setAssignedManager } from '@/data/uploaded'
 import { FeedGate } from '../FeedGate'
 import { buildFeed } from '../feedModel'
 import { AssignmentBlock } from './AssignmentBlock'
@@ -91,13 +92,49 @@ export function RfpSummaryPage() {
   const { tender, match } = row
   const source = sources.find((item) => item.id === tender.sourceId)
 
-  /** The routed owner unless the operator has chosen someone else on this visit. */
-  const owner =
-    (overrideId ? people.find((person) => person.id === overrideId) : undefined) ?? match.person
+  /**
+   * The people a reassignment can choose from, resolved ONCE.
+   *
+   * The workspace's own where it has them, the database's roster where it does
+   * not: a reading arrives before any setup has run and its owner still has to be
+   * handed to somebody.
+   *
+   * Computed here rather than inline at the call site, because it was inline and
+   * the owner lookup below used `people` instead. On a reading, where `people` is
+   * empty, the list offered names from `uploadedManagers` and the lookup searched
+   * an empty array -- so clicking Assign set the id, found nobody, fell back to
+   * the routed owner and changed nothing on screen. The toast gave it away by
+   * reading "The owner now owns this bid".
+   */
+  const roster = people.length > 0 ? people : uploadedManagers
 
-  const onAssign = (personId: string) => {
+  /** The routed owner unless the operator has chosen someone else. */
+  const owner =
+    (overrideId ? roster.find((person) => person.id === overrideId) : undefined) ?? match.person
+
+  const onAssign = async (personId: string) => {
+    const person = roster.find((item) => item.id === personId)
     setOverrideId(personId)
-    const person = people.find((item) => item.id === personId)
+
+    /*
+     * Written to the reading, not just held on screen. Bid Orchestrator's
+     * dashboard filters on `assigned_manager_id`, so without this the tender
+     * stayed in the previous manager's queue while Bid Hawk showed it as
+     * somebody else's. A seeded tender has no row to write to and keeps its
+     * derived owner.
+     */
+    if (isUploaded) {
+      try {
+        await setAssignedManager(tender.id, personId)
+      } catch (caught) {
+        setOverrideId(null)
+        toast.error('That reassignment was not saved', {
+          description: (caught as Error).message,
+        })
+        return
+      }
+    }
+
     toast.success(`${tender.tenderRef} assigned`, {
       description: `${person?.name ?? 'The owner'} now owns this bid.`,
     })
@@ -130,12 +167,7 @@ export function RfpSummaryPage() {
           <RiskFlags tender={tender} />
           <AssignmentBlock
             owner={owner}
-            /*
-             * The workspace's own people where it has them, and the database's
-             * roster where it does not. A reading arrives before any setup has
-             * run, and its owner has to be handed to somebody.
-             */
-            people={people.length > 0 ? people : uploadedManagers}
+            people={roster}
             tender={tender}
             onAssign={onAssign}
           />

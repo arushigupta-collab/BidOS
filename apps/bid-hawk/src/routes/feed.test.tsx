@@ -356,8 +356,12 @@ describe('RFP summary', () => {
 
     // Reassignment stays: a computed owner nobody can change is a claim. It is
     // now a ranked list of the alternatives rather than a select of every name.
-    const alternates = within(section).getAllByRole('button', { name: 'Assign' })
+    // Named per person, so a screen reader's control list distinguishes them.
+    const alternates = within(section).getAllByRole('button', { name: /^Assign to / })
     expect(alternates.length).toBeGreaterThan(0)
+    expect(
+      within(section).getByRole('button', { name: 'Assign to Anand Raghunathan' }),
+    ).toBeInTheDocument()
     expect(within(section).getByText('Anand Raghunathan')).toBeInTheDocument()
   })
 
