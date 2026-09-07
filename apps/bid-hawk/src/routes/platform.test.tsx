@@ -78,25 +78,23 @@ describe('BidOS landing', () => {
     // And the constant itself is the order the client set. Spelled out once so a
     // reordering of MODULES has to be deliberate rather than accidental.
     expect(rendered).toEqual([
+      'Opportunity Management',
       'Bid Hawk',
       'Bid Orchestrator',
       'Bid Author',
       'Bid Partners',
       'Project Management',
-      'Opportunity Management',
     ])
 
     /*
-     * BIDOS STILL HAS FOUR MODULES. The last two are adjacent systems either side
-     * of the bid and are not in the naming hierarchy, which is why they sit after
-     * the four rather than among them. They were removed at the client's request
-     * and restored at the client's request; the card count changed, the scope did
-     * not.
+     * BIDOS STILL HAS FOUR MODULES. The first and last cards are adjacent systems
+     * either side of the bid and are not in the naming hierarchy; their place on
+     * the row is chronological -- the deal, the bid, the delivery -- and reading it
+     * as a ranking would be reading six modules where there are four.
      */
-    expect(rendered.slice(0, 4)).toEqual(
-      MODULES.filter((module) => !module.href.startsWith('http') || module.id.startsWith('bid-'))
-        .map((module) => module.name),
-    )
+    expect(rendered.filter((name) => name?.startsWith('Bid '))).toEqual([
+      'Bid Hawk', 'Bid Orchestrator', 'Bid Author', 'Bid Partners',
+    ])
   })
 
   it('sends each card to its own target, so a reorder cannot swap label and destination', () => {
@@ -115,6 +113,15 @@ describe('BidOS landing', () => {
     // Every URL checked individually. A reorder that moves a label without its target is
     // the failure mode here, and only a name-to-href pairing catches it.
     expect(pairs).toEqual([
+      /*
+       * First on the row: the deal exists before the tender does. Straight to its
+       * sign-in, which is the honest destination -- it has one, and landing
+       * somebody on a page that immediately bounces them is a worse arrival.
+       */
+      {
+        name: 'Opportunity Management',
+        href: 'https://emb-global-crm.vercel.app/login?redirectTo=%2F',
+      },
       { name: 'Bid Hawk', href: '/bid-hawk' },
       { name: 'Bid Orchestrator', href: 'https://bid-orchestrator.vercel.app/' },
       { name: 'Bid Author', href: 'https://bid-author.vercel.app/' },
@@ -125,17 +132,13 @@ describe('BidOS landing', () => {
        */
       { name: 'Bid Partners', href: '/bid-partners/registry' },
       /*
-       * The two adjacent systems. Both hardcoded rather than configurable -- they
-       * are somebody else's product at somebody else's address, the same in every
-       * environment -- and both loaded and returning 200 when set. A
-       * pattern-derived hostname shipped once and returned DEPLOYMENT_NOT_FOUND,
-       * so the href is now checked on the way in rather than on the way out.
+       * Last on the row: what happens after a win. Hardcoded rather than
+       * configurable -- somebody else's product at somebody else's address, the
+       * same in every environment -- and loaded once, returning 200, before being
+       * committed. A pattern-derived hostname shipped once and returned
+       * DEPLOYMENT_NOT_FOUND, so every outbound href is checked on the way in.
        */
-      { name: 'Project Management', href: 'https://nexus.emb.global/#features' },
-      {
-        name: 'Opportunity Management',
-        href: 'https://emb-global-crm.vercel.app/login?redirectTo=%2F',
-      },
+      { name: 'Project Management', href: 'https://tcil-pm.vercel.app/' },
     ])
   })
 

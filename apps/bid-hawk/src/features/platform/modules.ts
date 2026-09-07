@@ -41,18 +41,28 @@ export interface Module {
 }
 
 /**
- * What the landing shows, in the order the client set: Bid Hawk, Bid Orchestrator,
- * Bid Author, Bid Partners, Project Management, Opportunity Management.
+ * What the landing shows, in the order the client set: Opportunity Management,
+ * Bid Hawk, Bid Orchestrator, Bid Author, Bid Partners, Project Management.
+ *
+ * Opportunity Management leads because it is where the work starts -- the deal
+ * exists before the tender does. The four BidOS modules follow in their own
+ * sequence, and Project Management closes, being what happens after a win. So the
+ * row reads left to right as the life of a pursuit, with the product this repo
+ * builds in the middle of it.
  *
  * The landing renders straight from this array, so the grid, the count in the lede
  * and the column rule all follow it with no positions hardcoded anywhere: order
  * and membership live here and only here.
  *
- * BIDOS STILL HAS FOUR MODULES. The last two are adjacent systems either side of
- * the bid -- Opportunity Management is the pipeline that feeds it, Project
- * Management the delivery of what it wins -- and neither is part of the naming
- * hierarchy. They were removed at the client's request and restored at the
+ * BIDOS STILL HAS FOUR MODULES. The first and last cards are adjacent systems
+ * either side of the bid -- Opportunity Management is the pipeline that feeds it,
+ * Project Management the delivery of what it wins -- and neither is part of the
+ * naming hierarchy. They were removed at the client's request and restored at the
  * client's request; both times the count changed and the scope did not.
+ *
+ * Which is why they are no longer both at the end: their position on the row is
+ * chronological, not a ranking, and reading it as one would be reading six
+ * modules where there are four.
  *
  * WHAT IS NOT RESTORED: the demo credentials the Opportunity Management card used
  * to print. `leadership@emb.global` and a password rendered in plain text on a
@@ -78,6 +88,18 @@ const AUTHOR_URL =
   import.meta.env.VITE_BID_AUTHOR_URL || 'https://bid-author.vercel.app/'
 
 export const MODULES: Module[] = [
+  {
+    id: 'opportunity-management',
+    name: 'Opportunity Management',
+    description:
+      'The pipeline that feeds BidOS: accounts, opportunities, stages and owners, so every tender sourced and every project won reports back to the deal.',
+    mark: OpportunityManagementMark,
+    // Straight to its sign-in, which is the honest destination: it has one, and
+    // landing somebody on a page that immediately bounces them is a worse arrival
+    // than sending them where they were always going. Verified 200.
+    href: 'https://emb-global-crm.vercel.app/login?redirectTo=%2F',
+    separatelyDeployed: true,
+  },
   {
     id: 'bid-hawk',
     name: 'Bid Hawk',
@@ -145,19 +167,7 @@ export const MODULES: Module[] = [
      * outbound href on the way in, after a pattern-derived hostname shipped once
      * and returned DEPLOYMENT_NOT_FOUND.
      */
-    href: 'https://nexus.emb.global/#features',
-    separatelyDeployed: true,
-  },
-  {
-    id: 'opportunity-management',
-    name: 'Opportunity Management',
-    description:
-      'The pipeline that feeds BidOS: accounts, opportunities, stages and owners, so every tender sourced and every project won reports back to the deal.',
-    mark: OpportunityManagementMark,
-    // Straight to its sign-in, which is the honest destination: it has one, and
-    // landing somebody on a page that immediately bounces them is a worse arrival
-    // than sending them where they were always going. Verified 200.
-    href: 'https://emb-global-crm.vercel.app/login?redirectTo=%2F',
+    href: 'https://tcil-pm.vercel.app/',
     separatelyDeployed: true,
   },
 ]

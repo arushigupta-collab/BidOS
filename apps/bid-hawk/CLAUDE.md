@@ -38,8 +38,11 @@ suite. The positioning line is "The operating layer for bidding".
 Project Management and Opportunity Management, which are adjacent systems and not
 part of this hierarchy. The card count has changed twice and the scope has not.
 
-**The card order on `/` is set by the client: Bid Hawk, Bid Orchestrator, Bid Author,
-Bid Partners, Project Management, Opportunity Management.** It holds in the `MODULES` constant, on the `/` grid, in the list above
+**The card order on `/` is set by the client: Opportunity Management, Bid Hawk, Bid
+Orchestrator, Bid Author, Bid Partners, Project Management.** The row reads left to
+right as the life of a pursuit -- the deal, then the bid, then the delivery -- with
+the four modules this repo builds in the middle. The position is chronological and
+not a ranking. It holds in the `MODULES` constant, on the `/` grid, in the list above
 and in the descriptions below. The grid renders straight from `MODULES` with no
 positions hardcoded, so order and membership live in one place. Do not reorder it to a
 lifecycle reading without being asked: that was proposed and the client chose this
@@ -116,15 +119,21 @@ variables, comments and tests alike:
 
 ```
 vendor          the word is "partner" throughout
-TCIL
-Telecommunications Consultants India
 Scout
 Build Team
 ```
 
-**The logged exception for `tcil-pm.vercel.app` is RETIRED.** It covered a hostname in
-one `MODULES` href, for a deployment this product linked out to. That card has been
-removed and the string appears nowhere in `src/`, so the ban now holds without exception.
+**`TCIL` AND `Telecommunications Consultants India` ARE NO LONGER BANNED.** They were,
+on the reasoning that a real client name must not appear as the bidding
+organisation. The client then asked for a TCIL-branded proposal deck, which makes
+TCIL the bidder by instruction: `src/lib/ingest/tcil.ts` holds the identity and
+`tcilLogo.ts` the mark. Note the deck is the ONLY place this is true -- eligibility
+is still scored against Meridian Infratech, so the two disagree by design and
+`src/lib/ingest/tcil.ts` says so at the top.
+
+**The `tcil-pm.vercel.app` exception is BACK.** It covers one hostname in one
+`MODULES` href, for a deployment this product links out to. It was retired when
+that card was removed and returns with it, at the client's instruction.
 
 plus any real client name used as the bidding organisation. A delivery partner is a
 peer you bid alongside; "vendor" frames them as a supplier being procured from,
@@ -570,10 +579,10 @@ screen it belongs to.
    and should not be copied from on this point.
 
 6. **RESOLVED. Every outbound URL on the landing has been loaded once and returns 200:**
-   `bid-orchestrator`, `bid-author`, `nexus.emb.global/#features` (Project Management)
-   and `emb-global-crm.vercel.app/login?redirectTo=%2F` (Opportunity Management). The
-   last two replaced `tcil-pm` and the CRM root at the client's instruction and were
-   loaded before being committed. Kept as a note rather than deleted, because the
+   `bid-orchestrator`, `bid-author`, `tcil-pm.vercel.app` (Project Management) and
+   `emb-global-crm.vercel.app/login?redirectTo=%2F` (Opportunity Management). Project
+   Management has now been pointed at `nexus.emb.global` and back at `tcil-pm` on
+   instruction; each was loaded before being committed. Kept as a note rather than deleted, because the
    constructed `tcil-crm.vercel.app` returned DEPLOYMENT_NOT_FOUND, and a 404 on one of
    six equal cards undoes the argument that all six are real. Check every outbound href
    resolves whenever one is added or changed.

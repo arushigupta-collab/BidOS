@@ -71,9 +71,18 @@ describe('The setup journey', () => {
     const error = vi.spyOn(console, 'error').mockImplementation(() => {})
     render(<RouterProvider router={router} future={{ v7_startTransition: true }} />)
 
-    // / → Try now on the Bid Hawk card, the first of the three.
+    /*
+     * Bid Hawk's card, found by its own href rather than by position. Taken from
+     * index 0 this broke the moment Opportunity Management was put first: the
+     * journey started on somebody else's CRM and the next step had nothing to
+     * click. Every card carries the same "Try now", so the destination is the only
+     * thing that identifies one.
+     */
+    const cards = screen.getAllByRole('link', { name: /try now/i })
+    const hawk = cards.find((link) => link.getAttribute('href') === '/bid-hawk')
+    expect(hawk, 'no card links to Bid Hawk').toBeDefined()
     await act(async () => {
-      fireEvent.click(screen.getAllByRole('link', { name: /try now/i })[0])
+      fireEvent.click(hawk as HTMLElement)
     })
 
     // → the module's introduction, then Begin setup
