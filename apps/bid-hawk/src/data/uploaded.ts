@@ -276,6 +276,10 @@ export async function fetchUploadedTenders(): Promise<UploadedFeed> {
         deadlineNote: f.deadline_at ? new Date(f.deadline_at as string).toLocaleString('en-GB', {
           dateStyle: 'medium', timeStyle: 'short',
         }) : '',
+        pageNo: (f.page_no as number) ?? null,
+        evidence: ((f.evidence as { page_no?: number; quote?: string }[]) ?? [])
+          .filter((e) => e?.quote)
+          .map((e) => ({ pageNo: e.page_no ?? null, quote: e.quote as string })),
       })),
     })
   })

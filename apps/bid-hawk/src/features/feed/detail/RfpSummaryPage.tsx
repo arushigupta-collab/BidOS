@@ -164,7 +164,7 @@ export function RfpSummaryPage() {
             * pipeline changed; only which screen presents them.
             */}
           <BidHawkSummary tender={tender} />
-          <RiskFlags tender={tender} />
+          <RiskFlags tender={tender} rfpId={isUploaded ? tender.id : null} />
           <AssignmentBlock
             owner={owner}
             people={roster}

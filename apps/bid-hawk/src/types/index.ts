@@ -9,6 +9,12 @@ export interface EligibilityRow {
 
 export type RiskSeverity = 'high' | 'medium' | 'low'
 
+/** One verbatim line from the document, with the page it sits on. */
+export interface RiskEvidence {
+  pageNo: number | null
+  quote: string
+}
+
 export interface RiskFlag {
   id: string
   title: string
@@ -17,6 +23,19 @@ export interface RiskFlag {
   recommendation: string
   /** Named consequence with a date, e.g. the pre-bid query cut-off. */
   deadlineNote?: string
+  /**
+   * Where the defect was found.
+   *
+   * The reading has always recorded these -- `risk_flags.page_no` and the
+   * `evidence` column added in migration 0006 -- and the interface dropped both
+   * on the way in. So the one screen whose whole claim is "this document
+   * contradicts itself" asserted it without saying where, which is the one place
+   * a reader has to be able to check.
+   *
+   * Absent on a seeded tender, which was never read from a document.
+   */
+  pageNo?: number | null
+  evidence?: RiskEvidence[]
 }
 
 export type TenderStatus = 'new' | 'reviewing' | 'assigned' | 'accepted' | 'declined'

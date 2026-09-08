@@ -1,8 +1,9 @@
 import { useRef, useState } from 'react'
-import { Upload } from 'lucide-react'
+import { Mail, Upload } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { ICON } from '@/lib/tokens'
 import { cn } from '@/lib/cn'
+import { toast } from '@/lib/toast'
 
 /**
  * Where a tender comes in.
@@ -62,13 +63,38 @@ export function Dropzone({ onFile, disabled }: DropzoneProps) {
           </p>
         </div>
 
-        <Button
-          variant="secondary"
-          disabled={disabled}
-          onClick={() => input.current?.click()}
-        >
-          Choose a file
-        </Button>
+        <div className="flex flex-col items-center gap-8">
+          <Button
+            variant="secondary"
+            disabled={disabled}
+            onClick={() => input.current?.click()}
+          >
+            Choose a file
+          </Button>
+
+          {/*
+            * NOT WIRED, and it says so when pressed rather than doing nothing.
+            *
+            * Sourcing a tender from a mailbox is the second intake path this
+            * product will need, and the button is here to show where it goes. A
+            * control that looks live and silently does nothing is the worst of
+            * the options available -- so this one names itself as unbuilt, which
+            * is also what stops it being mistaken for working in a demo.
+            */}
+          <Button
+            variant="ghost"
+            size="sm"
+            iconLeft={<Mail size={ICON.sm} aria-hidden="true" />}
+            onClick={() =>
+              toast.info('Email sync is not connected yet', {
+                description:
+                  'This is where a connected mailbox would be read for tenders that arrive as attachments. Upload the document for now.',
+              })
+            }
+          >
+            Sync Email
+          </Button>
+        </div>
 
         <input
           ref={input}
