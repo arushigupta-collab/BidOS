@@ -182,7 +182,7 @@ export function AddPeoplePage() {
         onConfirm={onConfirmImport}
         pending={importing}
         title="Import people"
-        description="Add many bid managers at once from a spreadsheet export. Every row is checked before anything is added."
+        description="Add many Account Executives at once from a spreadsheet export. Every row is checked before anything is added."
         read={readImport}
         template={TEMPLATE_CSV}
         templateFileName="bidos-people-template.csv"

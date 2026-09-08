@@ -98,7 +98,7 @@ export function PeoplePage() {
               People
             </h1>
             <p className="max-w-lede text-secondary-body text-fg-muted">
-              Every bid manager a qualifying tender can be routed to.
+              Every Account Executive a qualifying tender can be routed to.
             </p>
           </div>
           <Button
@@ -134,7 +134,7 @@ export function PeoplePage() {
         <EmptyState
           icon={<UserPlus size={ICON.lg} aria-hidden="true" />}
           title="No people yet"
-          description="A person record holds the domains and regions a bid manager covers, which is what a qualifying tender is routed against. Without one, a match has nobody to go to."
+          description="A person record holds the domains and regions an Account Executive covers, which is what a qualifying tender is routed against. Without one, a match has nobody to go to."
           action={
             <Button variant="primary" onClick={() => navigate('/team/new')}>
               Add the first person
@@ -161,7 +161,7 @@ export function PeoplePage() {
             {setupComplete ? (
               <NextStepBand
                 title="Open the RFP feed"
-                detail="Bid Hawk has matched listings against your connected platforms and routed each one to a bid manager."
+                detail="Bid Hawk has matched listings against your connected platforms and routed each one to an Account Executive."
                 actionLabel="Open the RFP feed"
                 to="/feed"
               />

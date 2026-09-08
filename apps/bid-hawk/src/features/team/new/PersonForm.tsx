@@ -74,7 +74,7 @@ export const PersonForm = forwardRef<HTMLButtonElement, PersonFormProps>(functio
             <p className="text-body text-fg-secondary">{PERSON_ROLE}</p>
           </div>
           <p className="text-helper text-fg-muted">
-            Everyone added here is a bid manager. There is no second role.
+            Everyone added here is an Account Executive. There is no second role.
           </p>
         </div>
 

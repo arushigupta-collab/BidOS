@@ -99,7 +99,7 @@ export interface Tender {
  */
 
 /**
- * A bid manager. Every person added is one, so the role is a constant rather than
+ * An Account Executive. Every person added is one, so the role is a constant rather than
  * a field with a choice behind it.
  *
  * `domains` and `regions` are what a tender is routed against. At least one of the
@@ -114,7 +114,18 @@ export interface Person {
   addedAt: string
 }
 
-export const PERSON_ROLE = 'Bid Manager'
+/**
+ * The VISIBLE name of the role. The stored one has not changed.
+ *
+ * `role_id` in the database is still `bid-manager`, and Bid Orchestrator and Bid
+ * Author read it -- renaming the value would have meant a migration and a
+ * coordinated deploy of three apps to change a label. So this is the label and
+ * that is the key, and the two are deliberately different.
+ *
+ * Bid Orchestrator's own screens still say "Bid Manager". Until they are changed
+ * too, the same person is called two things depending on which module you are in.
+ */
+export const PERSON_ROLE = 'Account Executive'
 
 /** A suggestion group as seed data declares it, before it reaches TagField. */
 export interface TagGroupSeed {

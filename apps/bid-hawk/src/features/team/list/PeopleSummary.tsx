@@ -26,7 +26,7 @@ export function PeopleSummary({ people }: { people: Person[] }) {
         </span>
 
         <div className="flex flex-col gap-4">
-          <p className="text-micro-label uppercase text-fg-muted">Bid managers</p>
+          <p className="text-micro-label uppercase text-fg-muted">Account Executives</p>
           <p className="flex items-baseline gap-8">
             <span className="numeric font-mono text-kpi-value text-fg">
               {formatCount(people.length)}

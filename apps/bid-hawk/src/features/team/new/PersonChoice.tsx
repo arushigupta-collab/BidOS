@@ -28,7 +28,7 @@ export const PersonChoice = forwardRef<HTMLButtonElement, PersonChoiceProps>(
         <div className="flex flex-col gap-8">
           <h2 className="text-section-title text-fg">Choose how to add</h2>
           <p className="max-w-lede text-secondary-body text-fg-muted">
-            A person record holds the domains and regions a bid manager covers, so a qualifying
+            A person record holds the domains and regions an Account Executive covers, so a qualifying
             tender can be routed to them.
           </p>
         </div>

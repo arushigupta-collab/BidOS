@@ -62,7 +62,7 @@ export function SuggestionPanel({
             elsewhere on the page can be screenshotted away from it and read as
             unconditional. */}
         <p className="text-secondary-body text-fg">
-          {`This is a suggestion, ranked on ${criteriaSentence()}. The selection is the bid manager's, and any partner in the table can be chosen.`}
+          {`This is a suggestion, ranked on ${criteriaSentence()}. The selection is the Account Executive's, and any partner in the table can be chosen.`}
         </p>
 
       </div>

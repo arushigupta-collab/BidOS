@@ -131,7 +131,7 @@ export function routeTender(
   fallbackIndex = 0,
 ): RoutingResult {
   if (people.length === 0) {
-    throw new Error('routeTender needs at least one bid manager to assign to')
+    throw new Error('routeTender needs at least one Account Executive to assign to')
   }
 
   const { domain, region } = tenderTerms(tender)

@@ -59,11 +59,11 @@ describe('RFP feed', () => {
     expect(
       await screen.findByRole(
         'heading',
-        { name: /add a bid manager before opening the feed/i },
+        { name: /add an Account Executive before opening the feed/i },
         { timeout: 4000 },
       ),
     ).toBeInTheDocument()
-    expect(screen.getByRole('button', { name: /add a bid manager/i })).toBeInTheDocument()
+    expect(screen.getByRole('button', { name: /add an Account Executive/i })).toBeInTheDocument()
     expect(screen.queryByRole('table')).not.toBeInTheDocument()
   })
 
@@ -74,7 +74,7 @@ describe('RFP feed', () => {
     expect(
       await screen.findByRole(
         'heading',
-        { name: /add a bid manager before opening the feed/i },
+        { name: /add an Account Executive before opening the feed/i },
         { timeout: 4000 },
       ),
     ).toBeInTheDocument()

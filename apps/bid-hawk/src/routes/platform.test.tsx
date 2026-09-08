@@ -789,7 +789,7 @@ describe('Bid Hawk, A to B and back', () => {
     })
 
     expect(await screen.findByText('Connect your platforms')).toBeInTheDocument()
-    expect(screen.getByText('Add your bid managers')).toBeInTheDocument()
+    expect(screen.getByText('Add your Account Executives')).toBeInTheDocument()
     expect(screen.getByRole('button', { name: /connect sources/i })).toBeEnabled()
     expect(screen.getByRole('button', { name: /^add people$/i })).toBeEnabled()
     expect(screen.queryByRole('button', { name: /available after/i })).not.toBeInTheDocument()

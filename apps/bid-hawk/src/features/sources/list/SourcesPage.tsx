@@ -187,15 +187,15 @@ export function SourcesPage() {
             {setupComplete ? (
               <NextStepBand
                 title="Open the RFP feed"
-                detail="Bid Hawk has matched listings against your connected platforms and routed each one to a bid manager."
+                detail="Bid Hawk has matched listings against your connected platforms and routed each one to an Account Executive."
                 actionLabel="Open the RFP feed"
                 to="/feed"
               />
             ) : (
               <NextStepBand
                 ordinal="02"
-                title="Add your bid managers"
-                detail="A person record holds the domains and regions a bid manager covers, which is what a qualifying tender is routed against."
+                title="Add your Account Executives"
+                detail="A person record holds the domains and regions an Account Executive covers, which is what a qualifying tender is routed against."
                 actionLabel="Add people"
                 to="/team/new"
               />

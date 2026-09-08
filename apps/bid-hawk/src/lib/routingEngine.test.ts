@@ -185,6 +185,6 @@ describe('The fallback, when no rule covers the tender', () => {
   })
 
   it('refuses an empty roster rather than inventing an owner', () => {
-    expect(() => routeTender(OPTICAL, [])).toThrow(/at least one bid manager/)
+    expect(() => routeTender(OPTICAL, [])).toThrow(/at least one Account Executive/)
   })
 })

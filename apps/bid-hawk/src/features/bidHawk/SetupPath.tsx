@@ -72,8 +72,8 @@ export function SetupPath({ onBack }: SetupPathProps) {
         <motion.li {...enter(1)}>
           <SetupStepRow
             step="02"
-            heading="Add your bid managers"
-            detail="Record the domains and regions each bid manager covers, so a qualifying tender routes to the right owner."
+            heading="Add your Account Executives"
+            detail="Record the domains and regions each Account Executive covers, so a qualifying tender routes to the right owner."
             action={
               <Button
                 variant="secondary"
@@ -97,7 +97,7 @@ export function SetupPath({ onBack }: SetupPathProps) {
           >
             <p className="max-w-lede text-center text-secondary-body text-fg-muted">
               Bid Hawk has matched listings against your connected platforms and routed
-              each one to a bid manager.
+              each one to an Account Executive.
             </p>
             <Button
               variant="primary"

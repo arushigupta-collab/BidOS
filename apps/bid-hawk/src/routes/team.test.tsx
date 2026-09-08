@@ -88,9 +88,9 @@ describe('Add people, state B', () => {
   it('states the single role rather than offering a choice', async () => {
     await openForm()
 
-    expect(screen.getByText('Bid Manager')).toBeInTheDocument()
+    expect(screen.getByText('Account Executive')).toBeInTheDocument()
     expect(screen.queryByRole('combobox', { name: /role/i })).not.toBeInTheDocument()
-    expect(screen.getByText(/Everyone added here is a bid manager/)).toBeInTheDocument()
+    expect(screen.getByText(/Everyone added here is an Account Executive/)).toBeInTheDocument()
   })
 
   it('names what is wrong with an email rather than calling it invalid', async () => {
@@ -246,7 +246,7 @@ describe('People', () => {
 
     await screen.findByText('Anand Raghunathan', undefined, { timeout: 4000 })
 
-    expect(screen.getAllByText('Bid Manager')).toHaveLength(5)
+    expect(screen.getAllByText('Account Executive')).toHaveLength(5)
     // The two lopsided records show a dash where they hold nothing.
     expect(screen.getAllByText('—')).toHaveLength(2)
   })
@@ -256,7 +256,7 @@ describe('People', () => {
     renderAt('/team')
 
     const summary = await screen.findByLabelText('People summary', undefined, { timeout: 4000 })
-    expect(within(summary).getByText('Bid managers')).toBeInTheDocument()
+    expect(within(summary).getByText('Account Executives')).toBeInTheDocument()
     expect(within(summary).getByText('5')).toBeInTheDocument()
     expect(within(summary).getByText('1 by region only')).toBeInTheDocument()
   })

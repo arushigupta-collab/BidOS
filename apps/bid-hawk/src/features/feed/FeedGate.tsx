@@ -45,11 +45,11 @@ export function FeedGate({ hasSource, hasPerson }: FeedGateProps) {
     <div className="flex flex-1 flex-col justify-center">
       <EmptyState
         icon={<UserPlus size={ICON.lg} aria-hidden="true" />}
-        title="Add a bid manager before opening the feed"
-        description="Your platforms are connected. Bid Hawk assigns every listing it keeps to a bid manager, so it needs at least one person and the domains and regions they cover."
+        title="Add an Account Executive before opening the feed"
+        description="Your platforms are connected. Bid Hawk assigns every listing it keeps to an Account Executive, so it needs at least one person and the domains and regions they cover."
         action={
           <Button variant="primary" onClick={() => navigate('/team/new')}>
-            Add a bid manager
+            Add an Account Executive
           </Button>
         }
       />
