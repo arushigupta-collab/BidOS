@@ -39,11 +39,19 @@ export function Dialog({
           className={cn(
             'fixed left-1/2 top-1/2 z-dialog flex w-palette max-w-[calc(100vw-var(--space-32))]',
             '-translate-x-1/2 -translate-y-1/2 flex-col gap-16',
+            /*
+             * Capped, because the dialog is centred by a transform: content taller
+             * than the viewport overflowed BOTH edges, and the top of it could not
+             * be reached at all -- a fixed element does not scroll with the page.
+             * A list of seven pre-bid queries went off the bottom and took the
+             * download with it.
+             */
+            'max-h-[calc(100vh-var(--space-32))]',
             'rounded-overlay bg-surface-overlay p-24 shadow-dialog',
             className,
           )}
         >
-          <div className="flex items-start justify-between gap-16">
+          <div className="flex shrink-0 items-start justify-between gap-16">
             <div className="flex min-w-0 flex-col gap-8">
               <RadixDialog.Title className="text-section-title text-fg">{title}</RadixDialog.Title>
               {description && (
@@ -61,9 +69,16 @@ export function Dialog({
             </RadixDialog.Close>
           </div>
 
-          {children}
+          {/*
+            * The body scrolls; the title and the footer stay put. `min-h-0` is
+            * what makes that work: a flex child defaults to its content's height
+            * and would push past the cap rather than scrolling inside it.
+            */}
+          <div className="scrollable flex min-h-0 flex-1 flex-col">{children}</div>
 
-          {footer && <div className="flex items-center justify-end gap-8">{footer}</div>}
+          {footer && (
+            <div className="flex shrink-0 items-center justify-end gap-8">{footer}</div>
+          )}
         </RadixDialog.Content>
       </RadixDialog.Portal>
     </RadixDialog.Root>
