@@ -98,3 +98,20 @@ describe('the workbook', () => {
     expect(width).toBeLessThanOrEqual(70)
   })
 })
+
+describe('readability of the sheet somebody outside the company opens', () => {
+  /*
+   * A question runs to a few hundred characters against a capped column width.
+   * Unwrapped it is one long line vanishing under the next column, in the one
+   * artefact here whose entire purpose is being read by a buyer.
+   */
+  it('wraps and top-aligns every cell', () => {
+    const styles = strFromU8(parts(buildXlsx(SIMPLE))['xl/styles.xml'])
+    const xfs = [...styles.matchAll(/<xf [^>]*applyAlignment[\s\S]*?<\/xf>/g)]
+    expect(xfs).toHaveLength(2)
+    for (const xf of xfs) {
+      expect(xf[0]).toContain('wrapText="1"')
+      expect(xf[0]).toContain('vertical="top"')
+    }
+  })
+})

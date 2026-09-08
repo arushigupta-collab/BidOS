@@ -126,8 +126,18 @@ export function buildXlsx(sheet: Sheet): Uint8Array {
         `<fills count="1"><fill><patternFill patternType="none"/></fill></fills>` +
         `<borders count="1"><border/></borders>` +
         `<cellStyleXfs count="1"><xf numFmtId="0" fontId="0"/></cellStyleXfs>` +
-        `<cellXfs count="2"><xf numFmtId="0" fontId="0" xfId="0"/>` +
-        `<xf numFmtId="0" fontId="1" xfId="0" applyFont="1"/></cellXfs>` +
+        /*
+         * Both styles wrap and align to the top. A question runs to a few hundred
+         * characters and the columns are capped at a readable width, so unwrapped
+         * it is one long line disappearing under the next column -- in a sheet
+         * whose whole purpose is being read by somebody outside this company.
+         */
+        `<cellXfs count="2">` +
+        `<xf numFmtId="0" fontId="0" xfId="0" applyAlignment="1">` +
+        `<alignment vertical="top" wrapText="1"/></xf>` +
+        `<xf numFmtId="0" fontId="1" xfId="0" applyFont="1" applyAlignment="1">` +
+        `<alignment vertical="top" wrapText="1"/></xf>` +
+        `</cellXfs>` +
         `</styleSheet>`,
     ),
     'xl/worksheets/sheet1.xml': strToU8(

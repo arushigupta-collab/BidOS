@@ -182,11 +182,20 @@ function Flag({
  */
 export function composeQuestion(flag: RiskFlag): string {
   const page = firstPage(flag)
+
+  /*
+   * Trailing punctuation is stripped before anything is appended. Concatenated
+   * naively this read "...risk of missing it. (page 10)." and closed a quote as
+   * `RFP Document.".` -- a full stop, a parenthetical, then another full stop.
+   * The buyer reads this sentence without the product around it.
+   */
+  const stem = flag.detail.trim().replace(/[.;:,\s]+$/, '')
   const where = page ? ` (page ${page})` : ''
-  const quote = flag.evidence?.[0]?.quote
-  const cited = quote ? ` The document states: "${quote}".` : ''
-  return `${flag.detail}${where}.${cited} Please clarify or confirm which requirement governs.`
-    .replace(/\.\./g, '.')
+
+  const quote = flag.evidence?.[0]?.quote?.trim().replace(/[.;:,\s]+$/, '')
+  const cited = quote ? ` The document states: \u201C${quote}.\u201D` : ''
+
+  return `${stem}${where}.${cited} Please clarify or confirm which requirement governs.`
     .replace(/\s+/g, ' ')
     .trim()
 }
