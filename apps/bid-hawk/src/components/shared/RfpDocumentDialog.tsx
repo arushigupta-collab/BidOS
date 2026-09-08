@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Dialog, Spinner, StatusBanner } from '@/components/ui'
 import { RFP_DOCUMENT_LABEL, rfpDocumentHref } from '@/lib/rfpDocument'
+import type { TenderDocument } from '@/data/uploaded'
 
 /**
  * The tender document, read in place.
@@ -21,23 +22,39 @@ export interface RfpDocumentDialogProps {
   /** The tender's title, so the dialog says which document this is. */
   title?: string
   /**
-   * The reading whose document to show, or null for the bundled one.
+   * Which document to show, as one of three named states.
    *
-   * REQUIRED, and null is the explicit way to ask for the document that ships
-   * with the build. It was optional, and two of the three call sites omitted it
-   * and silently got the bundled Aaple Sarkar PDF for whatever tender they were
-   * on. An argument whose absence produces a plausible wrong answer is worse than
-   * one that will not compile: use `documentIdFor(tender)`.
+   * It was `string | null`, where null meant the bundled document -- so a tender
+   * with NO document was indistinguishable from a tender whose document happens
+   * to be the bundled one, and thirteen seeded tenders took the wrong branch.
+   * Use `documentFor(tender)`.
    */
-  rfpId: string | null
+  document: TenderDocument
 }
 
-export function RfpDocumentDialog({ open, onOpenChange, title, rfpId }: RfpDocumentDialogProps) {
-  const [src, setSrc] = useState<string | null>(rfpId ? null : rfpDocumentHref())
-  const [missing, setMissing] = useState(false)
+export function RfpDocumentDialog({ open, onOpenChange, title, document }: RfpDocumentDialogProps) {
+  const [src, setSrc] = useState<string | null>(
+    document.kind === 'bundled' ? rfpDocumentHref() : null,
+  )
+  const [missing, setMissing] = useState(document.kind === 'none')
+
+  const rfpId = document.kind === 'stored' ? document.rfpId : null
 
   useEffect(() => {
-    if (!open || !rfpId) return
+    // A tender with no document has nothing to fetch and says so; the bundled one
+    // is on disk and needs no signing.
+    if (document.kind === 'none') {
+      setSrc(null)
+      setMissing(true)
+      return
+    }
+    if (document.kind === 'bundled') {
+      setSrc(rfpDocumentHref())
+      setMissing(false)
+      return
+    }
+    if (!open) return
+
     let live = true
     setSrc(null)
     setMissing(false)
@@ -58,7 +75,7 @@ export function RfpDocumentDialog({ open, onOpenChange, title, rfpId }: RfpDocum
     return () => {
       live = false
     }
-  }, [open, rfpId])
+  }, [open, rfpId, document.kind])
 
   return (
     <Dialog
@@ -72,7 +89,11 @@ export function RfpDocumentDialog({ open, onOpenChange, title, rfpId }: RfpDocum
         <StatusBanner
           tone="info"
           title="This tender's document is not held"
-          description="It was read before the file was kept, so there is nothing to display. Reading it again stores the document alongside the result."
+          description={
+            document.kind === 'none'
+              ? 'This is a sourced listing rather than a document this workspace holds. Upload the tender to read it here.'
+              : 'It was read before the file was kept, so there is nothing to display. Reading it again stores the document alongside the result.'
+          }
         />
       ) : src ? (
         // FitH so the page arrives at the reader's width rather than at whatever

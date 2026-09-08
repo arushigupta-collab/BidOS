@@ -21,7 +21,7 @@ import { ICON } from '@/lib/tokens'
 import { useWorkspace } from '@/store/useWorkspace'
 import { ResponseStatusBadge } from './ResponseStatusBadge'
 import { ViewRfpButton } from '@/components/shared/ViewRfpButton'
-import { documentIdFor } from '@/data/uploaded'
+import { documentFor } from '@/data/uploaded'
 import { counts, isOutstanding, lastActivity, statusOf } from './responsesModel'
 
 /**
@@ -224,7 +224,7 @@ export function ResponseDetailPage() {
               client", which was the only thing on this screen that left the product — and
               it left it to compose a message the primary beside it already records. What a
               reader actually wants here is the document the partners are responding to. */}
-          <ViewRfpButton title={tender.title} rfpId={documentIdFor(tender)} />
+          <ViewRfpButton title={tender.title} document={documentFor(tender)} />
         </div>
       </header>
 

@@ -3,20 +3,15 @@ import { FileText } from 'lucide-react'
 import { Button } from '@/components/ui'
 import { ICON } from '@/lib/tokens'
 import { RfpDocumentDialog } from './RfpDocumentDialog'
+import type { TenderDocument } from '@/data/uploaded'
 
 export interface ViewRfpButtonProps {
   /** Primary on the RFP summary, where it is the page's main action; secondary elsewhere. */
   variant?: 'primary' | 'secondary'
   /** Named on screens where the surrounding context does not already say which tender. */
   title?: string
-  /**
-   * The reading to show, or null for the document bundled with the build.
-   *
-   * Required. See RfpDocumentDialog: optional, it let two screens open the wrong
-   * tender's document without anything failing. `documentIdFor(tender)` is the
-   * rule.
-   */
-  rfpId: string | null
+  /** Which document, as one of three named states. See `documentFor(tender)`. */
+  document: TenderDocument
 }
 
 /**
@@ -37,7 +32,7 @@ export interface ViewRfpButtonProps {
  * dialog's open state through three parents is three chances for one of them to
  * be wired differently.
  */
-export function ViewRfpButton({ variant = 'secondary', title, rfpId }: ViewRfpButtonProps) {
+export function ViewRfpButton({ variant = 'secondary', title, document }: ViewRfpButtonProps) {
   const [open, setOpen] = useState(false)
 
   return (
@@ -50,7 +45,7 @@ export function ViewRfpButton({ variant = 'secondary', title, rfpId }: ViewRfpBu
         View RFP
       </Button>
 
-      <RfpDocumentDialog open={open} onOpenChange={setOpen} title={title} rfpId={rfpId} />
+      <RfpDocumentDialog open={open} onOpenChange={setOpen} title={title} document={document} />
     </>
   )
 }

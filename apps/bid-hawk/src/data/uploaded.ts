@@ -18,20 +18,34 @@ import { supabase } from '@/lib/supabase'
 export const UPLOADED_SOURCE_ID = 'uploaded'
 
 /**
- * Which document a tender's "View RFP" should show.
+ * The one seeded tender the bundled document actually belongs to.
  *
- * A reading shows its own stored file; a seeded tender means the one document
- * that ships with the build, and says so by returning null rather than by the
- * caller omitting an argument.
- *
- * One rule in one place because it was being restated at each call site, and two
- * of the three restated it by forgetting: the partner module's tracker and ranked
- * comparison passed nothing at all, so every tender there opened the bundled
- * Aaple Sarkar PDF -- a plausible document, for the wrong tender, beside page
- * citations pointing into it.
+ * `public/rfp/aaple-sarkar-2.0-rfp.pdf` IS this tender's document. It is not any
+ * other tender's, and the other thirteen in the seed have no document at all.
  */
-export function documentIdFor(tender: Pick<Tender, 'id' | 'sourceId'>): string | null {
-  return tender.sourceId === UPLOADED_SOURCE_ID ? tender.id : null
+export const BUNDLED_DOCUMENT_TENDER_ID = 't-mahait-rts2'
+
+/**
+ * Which document a tender's "View RFP" should show. Three answers, all distinct.
+ *
+ * This was a `string | null`, where null meant "the document that ships with the
+ * build". That conflated two different things -- a tender whose document is the
+ * bundled one, and a tender that has no document -- and there are thirteen of the
+ * second in the seed. So every seeded tender but the hero opened the Aaple Sarkar
+ * PDF: a plausible document, for the wrong tender, next to page citations
+ * pointing into it.
+ *
+ * The states are named now, so no caller can pick the wrong one by omission.
+ */
+export type TenderDocument =
+  | { kind: 'stored'; rfpId: string }
+  | { kind: 'bundled' }
+  | { kind: 'none' }
+
+export function documentFor(tender: Pick<Tender, 'id' | 'sourceId'>): TenderDocument {
+  if (tender.sourceId === UPLOADED_SOURCE_ID) return { kind: 'stored', rfpId: tender.id }
+  if (tender.id === BUNDLED_DOCUMENT_TENDER_ID) return { kind: 'bundled' }
+  return { kind: 'none' }
 }
 
 interface RfpRow {

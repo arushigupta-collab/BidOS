@@ -284,33 +284,48 @@ describe('RFP summary', () => {
     expect(headings.indexOf('Bid Hawk summary')).toBeLessThan(headings.indexOf('Assignment'))
   })
 
-  it('opens the one held document from every tender, in place', async () => {
+  it('opens the bundled document for the tender it belongs to, in place', async () => {
+    withEverything()
+    renderAt(`/feed/${HERO}`)
+
+    const view = await screen.findByRole('button', { name: /view RFP/i }, { timeout: 4000 })
+    expect(view).not.toHaveAttribute('aria-disabled')
+
+    /**
+     * Opens in place rather than handing the file to the browser.
+     *
+     * It was an anchor with a target, which put the PDF into the browser's own
+     * handling -- and on most configurations that downloads rather than displays.
+     * A reader checking the page a figure came from got a file in their downloads
+     * folder and lost the summary they were reading.
+     */
+    fireEvent.click(view)
+
+    const frame = await screen.findByTitle(/tender document/i, undefined, { timeout: 4000 })
+    expect(frame.getAttribute('src')).toMatch(/\/rfp\/aaple-sarkar-2\.0-rfp\.pdf/)
+    expect(frame.getAttribute('src')).not.toMatch(/#\//)
+  })
+
+  /*
+   * This asserted the opposite -- that EVERY seeded tender opened the bundled
+   * document -- and that was the bug, not the rule. The file belongs to one
+   * tender. Serving it for the other thirteen showed a plausible document for the
+   * wrong tender, next to page citations pointing into it, which is worse than
+   * showing nothing because a reader has no way to tell.
+   */
+  it('tells a sourced listing it has no document rather than lending it another', async () => {
     withEverything()
 
-    // Not only the tender the document belongs to: every one of them.
-    for (const id of [HERO, 't-bsnl-otn-bihar', 't-hal-plm']) {
+    for (const id of ['t-bsnl-otn-bihar', 't-hal-plm']) {
       const { unmount } = renderAt(`/feed/${id}`)
 
       const view = await screen.findByRole('button', { name: /view RFP/i }, { timeout: 4000 })
-      expect(view).not.toHaveAttribute('aria-disabled')
-
-      /**
-       * Opens in place rather than handing the file to the browser.
-       *
-       * It was an anchor with a target, which put the PDF into the browser's own
-       * handling -- and on most configurations that downloads rather than
-       * displays. A reader checking the page a figure came from got a file in
-       * their downloads folder and lost the summary they were reading.
-       *
-       * Asserted on what appears, not on how it is wired: the document is
-       * embedded at the path that resolves for this build, with no hash route in
-       * it.
-       */
       fireEvent.click(view)
 
-      const frame = await screen.findByTitle(/tender document/i, undefined, { timeout: 4000 })
-      expect(frame.getAttribute('src')).toMatch(/\/rfp\/aaple-sarkar-2\.0-rfp\.pdf/)
-      expect(frame.getAttribute('src')).not.toMatch(/#\//)
+      expect(
+        await screen.findByText(/document is not held/i, undefined, { timeout: 4000 }),
+      ).toBeInTheDocument()
+      expect(screen.queryByTitle(/tender document/i)).not.toBeInTheDocument()
 
       unmount()
     }

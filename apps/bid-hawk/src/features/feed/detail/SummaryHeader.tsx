@@ -4,6 +4,7 @@ import { Badge, Countdown } from '@/components/ui'
 import { platformShortLabel } from '@/data/seed/platforms'
 import { ViewRfpButton } from '@/components/shared/ViewRfpButton'
 import { DeckButton } from '@/components/shared/DeckButton'
+import { documentFor } from '@/data/uploaded'
 
 export interface SummaryHeaderProps {
   tender: Tender
@@ -71,10 +72,16 @@ export function SummaryHeader({ tender, source, isUploaded }: SummaryHeaderProps
           {/* Only a reading has a draft; a seeded tender was never put through
               the pipeline, so the button resolves to nothing and renders nothing. */}
           <DeckButton rfpId={isUploaded ? tender.id : null} />
+          {/*
+            * One rule, not a second copy of it. `isUploaded` says whether the
+            * workspace read this tender; `documentFor` turns that into which of
+            * the three documents to show -- and it is the same function the
+            * partner screens call, so the two cannot disagree.
+            */}
           <ViewRfpButton
             variant="primary"
             title={tender.title}
-            rfpId={isUploaded ? tender.id : null}
+            document={documentFor(tender)}
           />
         </div>
       </header>

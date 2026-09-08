@@ -73,24 +73,20 @@ export function Dropzone({ onFile, disabled }: DropzoneProps) {
           </Button>
 
           {/*
-            * NOT WIRED, and it says so when pressed rather than doing nothing.
+            * A MOCK, on instruction: it reports a sync and performs none.
             *
             * Sourcing a tender from a mailbox is the second intake path this
-            * product will need, and the button is here to show where it goes. A
-            * control that looks live and silently does nothing is the worst of
-            * the options available -- so this one names itself as unbuilt, which
-            * is also what stops it being mistaken for working in a demo.
+            * product will need, and this button is here to show where it goes in
+            * a walkthrough. Nothing is read, nothing is connected, and no tender
+            * arrives from it -- so a demo that presses this and then expects a
+            * document in the feed will be disappointed. Uploading is still the
+            * only way in.
             */}
           <Button
             variant="ghost"
             size="sm"
             iconLeft={<Mail size={ICON.sm} aria-hidden="true" />}
-            onClick={() =>
-              toast.info('Email sync is not connected yet', {
-                description:
-                  'This is where a connected mailbox would be read for tenders that arrive as attachments. Upload the document for now.',
-              })
-            }
+            onClick={() => toast.success('Synced emails')}
           >
             Sync Email
           </Button>

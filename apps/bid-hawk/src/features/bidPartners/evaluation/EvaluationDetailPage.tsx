@@ -9,7 +9,7 @@ import { useWorkspace } from '@/store/useWorkspace'
 import { DecisionDrawer } from './DecisionDrawer'
 import { RankedTable } from './RankedTable'
 import { ViewRfpButton } from '@/components/shared/ViewRfpButton'
-import { documentIdFor } from '@/data/uploaded'
+import { documentFor } from '@/data/uploaded'
 import { CriteriaNote } from './CriteriaNote'
 import { SideBySide } from './SideBySide'
 import { SuggestionPanel } from './SuggestionPanel'
@@ -156,7 +156,7 @@ export function EvaluationDetailPage() {
 
         <div className="flex shrink-0 items-center gap-8">
           {/* The shared control, so this and the tracker cannot drift from Bid Hawk's. */}
-          <ViewRfpButton title={tender.title} rfpId={documentIdFor(tender)} />
+          <ViewRfpButton title={tender.title} document={documentFor(tender)} />
           <Button variant="primary" onClick={() => setDrawerFor([])}>
             {decision ? 'Change decision' : 'Record decision'}
           </Button>
