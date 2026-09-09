@@ -353,17 +353,25 @@ describe('Add source, state B', () => {
       fireEvent.click(within(dialog).getByRole('button', { name: /discard and leave/i }))
     })
 
-    expect(router.state.location.pathname).toBe('/sources')
+    // The landing, not the sources list: leaving the form now means leaving the
+    // module, and the confirm and the Back button have to agree about where.
+    expect(router.state.location.pathname).toBe('/')
   })
 
-  it('returns to the fork from Back', async () => {
-    await openForm()
+  /*
+   * Back leaves for the platform landing now rather than stepping to the fork,
+   * on the client's instruction. An untouched form is discarded without asking,
+   * because there is nothing to discard.
+   */
+  it('leaves for the landing from Back on an untouched form', async () => {
+    const { router } = await openForm()
 
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /^back$/i }))
     })
 
-    expect(await screen.findByRole('button', { name: /add new source/i })).toHaveFocus()
+    expect(router.state.location.pathname).toBe('/')
+    expect(screen.queryByRole('dialog')).not.toBeInTheDocument()
   })
 
   it('saves, navigates to the list, and highlights what it added', async () => {

@@ -314,7 +314,8 @@ describe('People', () => {
     await act(async () => {
       fireEvent.click(within(dialog).getByRole('button', { name: /discard and leave/i }))
     })
-    expect(router.state.location.pathname).toBe('/team')
+    // The landing, for the same reason the source form goes there.
+    expect(router.state.location.pathname).toBe('/')
   })
 
   it('names the person before removing them', async () => {

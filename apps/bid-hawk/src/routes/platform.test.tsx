@@ -123,8 +123,14 @@ describe('BidOS landing', () => {
         href: 'https://emb-global-crm.vercel.app/login?redirectTo=%2F',
       },
       { name: 'Bid Hawk', href: '/bid-hawk' },
-      { name: 'Bid Orchestrator', href: 'https://bid-orchestrator.vercel.app/' },
-      { name: 'Bid Author', href: 'https://bid-author.vercel.app/' },
+      /*
+       * This repository's deployments, not the older standalone builds these
+       * were copied from. The defaults pointed at those, so an unconfigured
+       * build sent a reader to a different product reading a different
+       * workspace -- and the assertion pinned the wrong ones with it.
+       */
+      { name: 'Bid Orchestrator', href: 'https://bidorchestrator.vercel.app/' },
+      { name: 'Bid Author', href: 'https://bidauthor.vercel.app/' },
       /*
        * The registry, not the module's introduction. That introduction was a page
        * whose only content described the page after it, and it made this the one
@@ -756,13 +762,20 @@ describe('Bid Hawk, A to B and back', () => {
     })
     expect(await screen.findByRole('status')).toHaveTextContent(/sourcing setup opened/i)
 
-    await act(async () => {
-      fireEvent.click(screen.getByRole('button', { name: /^back$/i }))
-    })
-    expect(await screen.findByRole('status')).toHaveTextContent(/returned to the bid hawk overview/i)
+    /*
+     * There is no announcement on the way out any more. Back leaves for the
+     * landing, and that page announces itself: a live region on a screen the
+     * reader is leaving would be read after they had already gone.
+     */
   })
 
-  it('is not a one-way door: Back returns to State A and restores focus', async () => {
+  /*
+   * This asserted the opposite -- "Back means State A, not the platform" -- and
+   * that was the rule until the client changed it. Back now means the landing,
+   * so the setup path IS a one-way door and the focus restore that used to
+   * receive the reader on the way out is gone with it.
+   */
+  it('leaves for the platform landing from Back', async () => {
     const { router } = renderAt('/bid-hawk')
 
     await act(async () => {
@@ -774,11 +787,10 @@ describe('Bid Hawk, A to B and back', () => {
       fireEvent.click(screen.getByRole('button', { name: /^back$/i }))
     })
 
-    const begin = await screen.findByRole('button', { name: /set up sourcing/i })
-    expect(begin).toHaveFocus()
-    // Back means State A, not the platform. The platform is the shell's job.
-    expect(router.state.location.pathname).toBe('/bid-hawk')
-    expect(screen.getByLabelText('What Bid Hawk does')).toBeInTheDocument()
+    expect(router.state.location.pathname).toBe('/')
+    // Routed rather than linked out: `/` is the deployment's own landing, and
+    // leaving through the network would drop the workspace held in this browser.
+    expect(await screen.findByRole('heading', { level: 1, name: 'BidOS' })).toBeInTheDocument()
   })
 
   it('offers both steps once open, neither gated on the other', async () => {

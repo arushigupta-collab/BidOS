@@ -152,9 +152,19 @@ export function AddSourcePage() {
                       setDraft((current) => applyPlatform(current, platformId))
                     }
                     onOpenImport={() => setImportOpen(true)}
+                    /*
+                     * "Back" means the platform landing here too, on
+                     * instruction -- it used to step to the source options.
+                     * The unsaved-work guard still runs: leaving discards a
+                     * half-filled form, and doing that silently is a different
+                     * thing from being asked to.
+                     */
                     onBack={() => {
-                      setPhase('choice')
-                      setAnnouncement('Returned to the source options.')
+                      if (touched) {
+                        setPendingExit(true)
+                        return
+                      }
+                      navigate('/')
                     }}
                     onSubmit={onSubmit}
                     saving={saving}
@@ -191,7 +201,7 @@ export function AddSourcePage() {
         cancelLabel="Keep editing"
         onConfirm={() => {
           setPendingExit(false)
-          navigate('/sources')
+          navigate('/')
         }}
       />
     </div>

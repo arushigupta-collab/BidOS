@@ -79,13 +79,15 @@ export interface Module {
  * landing page always sent a reader to the hosted build even when the module
  * they wanted was running on the machine in front of them.
  *
- * The defaults are the hosted addresses, so a build with no configuration
- * behaves exactly as before.
+ * The defaults are THIS repository's deployments. They used to be
+ * bid-orchestrator.vercel.app and bid-author.vercel.app -- the older standalone
+ * builds these were copied from -- so an unconfigured build sent a reader to a
+ * different product reading a different workspace.
  */
 const ORCHESTRATOR_URL =
-  import.meta.env.VITE_BID_ORCHESTRATOR_URL || 'https://bid-orchestrator.vercel.app/'
+  import.meta.env.VITE_BID_ORCHESTRATOR_URL || 'https://bidorchestrator.vercel.app/'
 const AUTHOR_URL =
-  import.meta.env.VITE_BID_AUTHOR_URL || 'https://bid-author.vercel.app/'
+  import.meta.env.VITE_BID_AUTHOR_URL || 'https://bidauthor.vercel.app/'
 
 export const MODULES: Module[] = [
   {

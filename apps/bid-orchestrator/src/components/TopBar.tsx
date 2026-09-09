@@ -9,7 +9,19 @@ import { ArrowLeft } from "../lib/icons";
  * to the hosted build instead drops them out of whatever they were working on.
  * Defaults to the hosted address.
  */
-const PORTAL_URL = import.meta.env.VITE_BIDOS_URL || "https://emb-bidos.vercel.app/";
+/**
+ * Back to the platform.
+ *
+ * The default is THIS repository's Bid Hawk deployment, which serves the BidOS
+ * landing. It used to be emb-bidos.vercel.app -- a different build reading a
+ * different workspace -- so Back left the product the user was working in and
+ * landed them on somebody else's data, which is not a broken link so much as a
+ * silently wrong one.
+ *
+ * Overridable, because a developer running the platform locally wants the local
+ * landing. The default is what a build with no configuration should do.
+ */
+const PORTAL_URL = import.meta.env.VITE_BIDOS_URL || "https://bid-hawk-livid.vercel.app/";
 
 export interface WorkspaceTab {
   id: string;

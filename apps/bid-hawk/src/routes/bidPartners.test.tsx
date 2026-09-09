@@ -75,7 +75,7 @@ describe('Bid Partners, State A', () => {
 })
 
 describe('Bid Partners, A to B and back', () => {
-  it('transitions in place to three steps, and Back returns', async () => {
+  it('transitions in place to three steps, and Back leaves for the landing', async () => {
     const { router } = renderAt('/bid-partners')
 
     await act(async () => {
@@ -105,11 +105,16 @@ describe('Bid Partners, A to B and back', () => {
     // The band belongs to State A and does not repeat itself here.
     expect(screen.queryByLabelText('What Bid Partners does')).not.toBeInTheDocument()
 
+    /*
+     * Back leaves for the platform landing now, on the client's instruction, so
+     * this no longer returns to State A and there is no focus to restore. It
+     * asserted both, which was the rule until the rule changed.
+     */
     await act(async () => {
       fireEvent.click(screen.getByRole('button', { name: /^back$/i }))
     })
-    expect(await screen.findByRole('button', { name: /begin setup/i })).toHaveFocus()
-    expect(screen.getByLabelText('What Bid Partners does')).toBeInTheDocument()
+    expect(await screen.findByRole('heading', { level: 1, name: 'BidOS' })).toBeInTheDocument()
+    expect(screen.queryByLabelText('What Bid Partners does')).not.toBeInTheDocument()
   })
 
   it('sends each step to its own screen', async () => {

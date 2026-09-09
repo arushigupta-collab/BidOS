@@ -156,15 +156,17 @@ export function AddPeoplePage() {
                     editingName={editing?.name}
                     onOpenImport={() => setImportOpen(true)}
                     onBack={() => {
-                      if (editing) {
-                        // The same guard the segmented control uses: leaving an
-                        // edited record must not discard it without asking.
-                        if (touched) setPendingExit(true)
-                        else navigate('/team')
+                      /*
+                       * "Back" means the platform landing, on instruction. The
+                       * guard is unchanged: leaving an edited record or a
+                       * half-filled form discards it, and doing that silently
+                       * is a different thing from being asked to.
+                       */
+                      if (touched) {
+                        setPendingExit(true)
                         return
                       }
-                      setPhase('choice')
-                      setAnnouncement('Returned to the people options.')
+                      navigate('/')
                     }}
                     onSubmit={onSubmit}
                     saving={saving}
@@ -205,7 +207,7 @@ export function AddPeoplePage() {
         cancelLabel="Keep editing"
         onConfirm={() => {
           setPendingExit(false)
-          navigate('/team')
+          navigate('/')
         }}
       />
     </div>

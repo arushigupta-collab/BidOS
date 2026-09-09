@@ -1,4 +1,5 @@
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useRef, useState, type ReactNode } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { AnimatePresence, motion, useReducedMotion } from 'framer-motion'
 import * as VisuallyHidden from '@radix-ui/react-visually-hidden'
 import { ListChecks } from 'lucide-react'
@@ -69,9 +70,15 @@ export interface ModuleIntroPageProps {
  * nothing on the BidOS landing says that — the module's card there says what it does.
  * The two are not the same fact, which is why neither replaces the other.
  *
- * Getting back to the platform is the shell's job, not this screen's: the EMB logo
- * and the "BidOS" nav item both go there from every route. So "Back" here means back
- * to State A, which is the only place it could sensibly mean.
+ * "BACK" LEAVES FOR THE PLATFORM, on instruction. It used to return to State A,
+ * on the reasoning that reaching the platform was the shell's job -- the EMB logo
+ * and the "BidOS" nav item both do it from every route. The client wants the
+ * control that says "Back" to mean the landing, so it does.
+ *
+ * Routed rather than linked to the deployment's own address. `/` IS that address
+ * once deployed, and going out through the network would reload the app and drop
+ * the workspace held in this browser -- the sources and people revealed by setup.
+ * Same destination, without throwing away what the reader just did.
  */
 export function ModuleIntroPage({
   mark,
@@ -85,7 +92,8 @@ export function ModuleIntroPage({
   secondary,
   link,
 }: ModuleIntroPageProps) {
-  const [inSetup, setInSetup] = useState(false)
+  const navigate = useNavigate()
+  const [inSetup, enterSetup] = useState(false)
   /** Which of the two ways in is open. Only read when `inSetup`. */
   const [openPath, setOpenPath] = useState<'primary' | 'secondary'>('primary')
   const secondaryButton = useRef<HTMLButtonElement>(null)
@@ -93,24 +101,16 @@ export function ModuleIntroPage({
   const reduce = useReducedMotion()
   const beginButton = useRef<HTMLButtonElement>(null)
 
-  // Focuses the primary when the setup path is left, so the keyboard path is
-  // unbroken in both directions. Not on first mount: arriving on the route, the
-  // heading should be the first thing read.
-  const mounted = useRef(false)
-  useEffect(() => {
-    if (!inSetup && mounted.current) {
-      // Back to whichever button opened the path, not always the primary.
-      // Returning to the primary after leaving by the secondary loses the
-      // reader's place on the way out of a door they did not come in by.
-      const returnTo = openPath === 'secondary' ? secondaryButton : beginButton
-      returnTo.current?.focus()
-    }
-    mounted.current = true
-  }, [inSetup, openPath])
+  /*
+   * There is no returning focus to the button that opened the path any more.
+   * Back leaves for the landing, so the path is a one-way door: nothing comes
+   * back to State A to receive focus, and the effect that used to do it -- along
+   * with the setter that triggered it -- was unreachable once Back changed.
+   */
 
   const openSetup = () => {
     setOpenPath('primary')
-    setInSetup(true)
+    enterSetup(true)
     setAnnouncement(
       action?.announcement ??
         `Setup path opened. Step 01 is ready. ${stepCount} steps in total.`,
@@ -119,13 +119,13 @@ export function ModuleIntroPage({
 
   const openSecondary = () => {
     setOpenPath('secondary')
-    setInSetup(true)
+    enterSetup(true)
     setAnnouncement(secondary?.announcement ?? `${secondary?.label ?? 'Setup'} opened.`)
   }
 
+  /** The control reads "Back", and Back means the platform landing. */
   const closeSetup = () => {
-    setInSetup(false)
-    setAnnouncement(`Returned to the ${name} overview.`)
+    navigate('/')
   }
 
   const anchorTransition = reduce
